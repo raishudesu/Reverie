@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { FcGoogle } from "react-icons/fc";
+import { useSignIn } from "@/stores/useFirebase";
+import { useEffect } from "react";
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -26,25 +27,37 @@ const FormSchema = z.object({
   }),
 });
 
-export function InputForm() {
+const InputForm = () => {
+  const { signIn, currentUser } = useSignIn();
+  /* const { currentUser } = useCurrentUser(); */
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: "", // Set your default email value here
+      password: "", // Set your default password value here
+    },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    try {
+      await signIn(data.email, data.password);
+      toast({
+        title: `Welcome ${data.email}`,
+      });
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log(currentUser);
+  }, [currentUser]);
 
   return (
     <Form {...form}>
-      <div className="space-y-2 p-6 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
+      <div className="flex flex-col gap-2 p-10 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
           <FormField
             control={form.control}
@@ -94,4 +107,6 @@ export function InputForm() {
       </div>
     </Form>
   );
-}
+};
+
+export default InputForm;
