@@ -29,7 +29,6 @@ const FormSchema = z.object({
 
 const InputForm = () => {
   const { signIn, currentUser } = useSignIn();
-  /* const { currentUser } = useCurrentUser(); */
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
