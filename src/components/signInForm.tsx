@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { FcGoogle } from "react-icons/fc";
-import { useSignIn } from "@/stores/useFirebase";
+import { useFirebaseServices } from "@/stores/useFirebase";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +30,7 @@ const FormSchema = z.object({
 
 const SignInForm = () => {
   const navigate = useNavigate();
-  const { signIn, currentUser } = useSignIn();
+  const { signIn, currentUser } = useFirebaseServices();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -43,10 +43,13 @@ const SignInForm = () => {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       await signIn(data.email, data.password);
-      toast({
-        title: `Welcome ${data.email}`,
-      });
+      currentUser
+        ? toast({
+            title: `Welcome ${data.email}`,
+          })
+        : null;
       form.reset();
+      navigate("/home");
     } catch (error) {
       console.log(error);
     }

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import { AiOutlineMenu } from "react-icons/ai";
 import { ModeToggle } from "./mode-toggle";
-import { useSignIn } from "@/stores/useFirebase";
+import { useFirebaseServices } from "@/stores/useFirebase";
 import { toast } from "./ui/use-toast";
 import { MdLogout } from "react-icons/md";
 
@@ -19,7 +19,7 @@ const SHEET_SIDES = ["left"] as const;
 type SheetSide = (typeof SHEET_SIDES)[number];
 
 export function SheetSide() {
-  const { currentUser, signOut } = useSignIn();
+  const { currentUser, signOut } = useFirebaseServices();
   const userSignOut = () => {
     try {
       signOut();

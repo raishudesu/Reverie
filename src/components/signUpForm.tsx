@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
-import { useSignIn } from "@/stores/useFirebase";
+import { useFirebaseServices } from "@/stores/useFirebase";
 import { useNavigate } from "react-router-dom";
 
 const FormSchema = z
@@ -34,7 +34,7 @@ const FormSchema = z
 
 const SignUpForm = () => {
   const navigate = useNavigate();
-  const { signUp } = useSignIn();
+  const { signUp } = useFirebaseServices();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -51,6 +51,7 @@ const SignUpForm = () => {
         title: `Account successfully created`,
       });
       form.reset();
+      navigate("/home");
     } catch (error) {
       console.log(error);
     }
