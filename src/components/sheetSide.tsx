@@ -31,7 +31,7 @@ export function SheetSide() {
     }
   };
   return (
-    <div className="md:hidden grid grid-cols-2 gap-2">
+    <div className="md:hidden">
       {SHEET_SIDES.map((side) => (
         <Sheet key={side}>
           <SheetTrigger asChild>
@@ -41,7 +41,7 @@ export function SheetSide() {
           </SheetTrigger>
           <SheetContent side={side}>
             <SheetHeader>
-              <SheetTitle>reverie.notes</SheetTitle>
+              <SheetTitle className="text-2xl font-bold">Reverie</SheetTitle>
             </SheetHeader>
             <div className="grid gap-4 py-4">
               <div className="flex flex-col justify-center items-center gap-4">
@@ -54,12 +54,7 @@ export function SheetSide() {
                     Sign out
                     <MdLogout size={20} />
                   </Button>
-                ) : (
-                  <>
-                    <Button>Sign in</Button>
-                    <Button variant={"ghost"}>Sign up</Button>
-                  </>
-                )}
+                ) : null}
                 <ModeToggle />
               </div>
             </div>

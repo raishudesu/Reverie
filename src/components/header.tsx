@@ -4,8 +4,10 @@ import { Button } from "./ui/button";
 import { useSignIn } from "@/stores/useFirebase";
 import { toast } from "./ui/use-toast";
 import { MdLogout } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   const { currentUser, signOut } = useSignIn();
   const userSignOut = () => {
     try {
@@ -13,6 +15,7 @@ const Header = () => {
       toast({
         title: "User signed out.",
       });
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -22,8 +25,7 @@ const Header = () => {
       <div className="w-full md:w-[75%] flex justify-between items-center gap-4">
         <div className="flex justify-center items-center">
           <SheetSide />
-
-          <h1 className="font-bold text-2xl">reverie.notes</h1>
+          <h1 className="font-bold text-2xl">Reverie</h1>
         </div>
 
         <div className="hidden md:flex items-center gap-2">
@@ -36,12 +38,7 @@ const Header = () => {
               Sign out
               <MdLogout size={20} />
             </Button>
-          ) : (
-            <>
-              <Button>Sign in</Button>
-              <Button variant={"ghost"}>Sign up</Button>
-            </>
-          )}
+          ) : null}
           <ModeToggle />
         </div>
       </div>

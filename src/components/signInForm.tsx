@@ -17,6 +17,7 @@ import { toast } from "@/components/ui/use-toast";
 import { FcGoogle } from "react-icons/fc";
 import { useSignIn } from "@/stores/useFirebase";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -27,7 +28,8 @@ const FormSchema = z.object({
   }),
 });
 
-const InputForm = () => {
+const SignInForm = () => {
+  const navigate = useNavigate();
   const { signIn, currentUser } = useSignIn();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -56,8 +58,14 @@ const InputForm = () => {
 
   return (
     <Form {...form}>
-      <div className="flex flex-col gap-2 p-10 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+      <div className="bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461] flex flex-col gap-4 p-10 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
+        <div className="text-3xl">
+          Sign in to <span className="font-bold">Reverie</span>
+        </div>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full flex flex-col gap-2"
+        >
           <FormField
             control={form.control}
             name="email"
@@ -84,28 +92,31 @@ const InputForm = () => {
               </FormItem>
             )}
           />
-          <Button className="w-full mt-4" type="submit">
+          <Button className="w-full mt-2" type="submit">
             Sign in
           </Button>
         </form>
         <div className="flex flex-col items-center gap-2">
           <h1>or</h1>
-          <Button variant={"ghost"} className="w-full flex items-center gap-2">
+          <Button
+            variant={"outline"}
+            className="w-full flex items-center gap-2"
+          >
             <FcGoogle size={20} />
             Sign in with Google
           </Button>
-          <p className="text-sm">
+          <div className="text-sm">
             Doesn't have an account?{" "}
             <span>
-              <a href="" className="text-blue-500">
+              <Button variant={"link"} onClick={() => navigate("/signup")}>
                 Sign up
-              </a>
+              </Button>
             </span>
-          </p>
+          </div>
         </div>
       </div>
     </Form>
   );
 };
 
-export default InputForm;
+export default SignInForm;

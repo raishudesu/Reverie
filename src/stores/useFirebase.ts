@@ -1,10 +1,11 @@
 import { create } from 'zustand'
 import app from '../config/firebaseConfig';
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 
 interface ISignIn {
   currentUser: object | null;
   signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   initializeAuthStateListener: () => void;
 }
@@ -16,6 +17,13 @@ export const useSignIn = create<ISignIn>((set) => ({
   signIn: async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  signUp: async (email: string, password: string) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.log(error)
     }
