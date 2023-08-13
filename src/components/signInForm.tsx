@@ -54,7 +54,7 @@ const SignInForm = () => {
 
   return (
     <Form {...form}>
-      <div className="flex flex-col gap-4 p-10 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
+      <div className="flex flex-col gap-4 p-10 border rounded-lg">
         <div className="text-3xl font-semibold text-center">Sign in</div>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

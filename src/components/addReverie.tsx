@@ -57,7 +57,7 @@ const AddReverie = () => {
               <FormLabel className="text-xl">Post reverie</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="What's happening?"
+                  placeholder="What's up?"
                   className="resize-none text-md"
                   {...field}
                 />

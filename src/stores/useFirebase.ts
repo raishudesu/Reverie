@@ -13,6 +13,8 @@ import {
   doc,
   getFirestore,
   setDoc,
+  deleteDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { toast } from "@/components/ui/use-toast";
 import { FirebaseError } from "firebase/app";
@@ -26,14 +28,17 @@ interface IFirebase {
   posts: DocumentData;
   successFetch: boolean;
   loadingFetch: boolean;
+  username: string | null;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, username: string) => Promise<void>;
   signOut: () => void;
   initializeAuthStateListener: () => void;
   addPost: (content: string) => void;
   setPosts: ({ posts }: { posts: object }) => void;
   setSuccessFetch: ({ status }: { status: boolean }) => void;
   setLoadingFetch: ({ status }: { status: boolean }) => void;
+  deletePost: (uid: string | undefined, postId: number) => void;
+  setUsername: (username: string) => void;
 }
 
 const auth = getAuth(app);
@@ -44,6 +49,7 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   posts: [],
   successFetch: false,
   loadingFetch: false,
+  username: null,
   signIn: async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -58,9 +64,31 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
       console.log(error);
     }
   },
-  signUp: async (email: string, password: string) => {
+  signUp: async (email: string, password: string, username: string) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password).then(
+        (userCredential) => {
+          const user = userCredential.user;
+          const uid = user.uid;
+          setDoc(doc(db, "users", uid), {
+            username: username,
+            uid: uid,
+            email: email,
+            password: password,
+            createdAt: serverTimestamp(),
+          })
+            .then(() => {
+              toast({
+                title: `Account successfully created`,
+              });
+            })
+            .catch((error) => {
+              toast({
+                title: `Account creation failed. Error: ${error}`,
+              });
+            });
+        }
+      );
     } catch (error) {
       const firebaseError = error as FirebaseError;
       toast({
@@ -85,6 +113,7 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
       const postData = {
         created_at: new Date(),
         content: content,
+        postId: postId,
       };
       await setDoc(docRef, postData);
     } catch (error) {
@@ -99,6 +128,23 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   },
   setLoadingFetch: ({ status }: { status: boolean }) => {
     set({ loadingFetch: status });
+  },
+  deletePost: async (uid: string | undefined, postId: number) => {
+    try {
+      await deleteDoc(doc(db, `users/${uid}/posts/${postId}`));
+      toast({
+        title: `Deleted successfully`,
+      });
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      toast({
+        title: `Post deletion failed. Error: ${firebaseError.code}`,
+      });
+      console.log(error);
+    }
+  },
+  setUsername: (username: string) => {
+    set({ username: username });
   },
 }));
 

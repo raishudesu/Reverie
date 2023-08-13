@@ -13,12 +13,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useNavigate } from "react-router-dom";
 
 const FormSchema = z
   .object({
+    username: z.string().min(3, {
+      message: "Username must be at least 3 characters.",
+    }),
     email: z.string().email({
       message: "Enter a valid email.",
     }),
@@ -39,6 +41,7 @@ const SignUpForm = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
+      username: "",
       email: "", // Set your default email value here
       password: "", // Set your default password value here
       confirmPassword: "",
@@ -47,10 +50,7 @@ const SignUpForm = () => {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
-      await signUp(data.email, data.password);
-      toast({
-        title: `Account successfully created`,
-      });
+      await signUp(data.email, data.password, data.username);
       form.reset();
       navigate("/home");
     } catch (error) {
@@ -60,12 +60,25 @@ const SignUpForm = () => {
 
   return (
     <Form {...form}>
-      <div className="flex flex-col gap-4 p-10 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
+      <div className="flex flex-col gap-4 p-10 border rounded-lg">
         <div className="text-3xl font-semibold">Create an account</div>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full flex flex-col gap-2"
         >
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="username" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"
