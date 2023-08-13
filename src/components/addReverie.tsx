@@ -15,6 +15,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { useFirebaseServices } from "@/stores/useFirebase";
+import { AiOutlineUser } from "react-icons/ai";
 
 const FormSchema = z.object({
   post: z
@@ -53,8 +54,13 @@ const AddReverie = () => {
           control={form.control}
           name="post"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-xl">Post reverie</FormLabel>
+            <FormItem className="flex flex-col items-start">
+              <FormLabel className="text-xl flex justify-center items-center gap-4">
+                <div className="md:hidden rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
+                  <AiOutlineUser size={20} />
+                </div>
+                Post reverie
+              </FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="What's up?"

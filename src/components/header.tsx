@@ -1,7 +1,7 @@
 import { ModeToggle } from "./mode-toggle";
 import { SheetSide } from "./sheetSide";
 import { useFirebaseServices } from "@/stores/useFirebase";
-
+import { LucideBookKey } from "lucide-react";
 const Header = () => {
   const { currentUser } = useFirebaseServices();
   return (
@@ -10,12 +10,12 @@ const Header = () => {
         className={
           currentUser
             ? "w-full md:w-[75%] flex justify-start md:justify-center items-center gap-4"
-            : "w-full md:w-[75%] flex justify-between items-center gap-4"
+            : "w-full md:w-[75%] flex justify-evenly md:justify-between items-center gap-4"
         }
       >
         <div className="flex justify-center items-center gap-2">
           {currentUser && <SheetSide />}
-
+          <LucideBookKey />
           <h1 className="font-bold text-2xl">Reverie</h1>
         </div>
         {!currentUser ? <ModeToggle /> : null}
