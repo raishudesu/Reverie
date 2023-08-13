@@ -19,16 +19,21 @@ import { FirebaseError } from "firebase/app";
 
 type UserDetails = {
   uid: string;
+  email: string | null;
 };
 interface IFirebase {
   currentUser: UserDetails | null;
   posts: DocumentData;
+  successFetch: boolean;
+  loadingFetch: boolean;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => void;
   initializeAuthStateListener: () => void;
   addPost: (content: string) => void;
   setPosts: ({ posts }: { posts: object }) => void;
+  setSuccessFetch: ({ status }: { status: boolean }) => void;
+  setLoadingFetch: ({ status }: { status: boolean }) => void;
 }
 
 const auth = getAuth(app);
@@ -37,9 +42,14 @@ export const db = getFirestore(app);
 export const useFirebaseServices = create<IFirebase>((set) => ({
   currentUser: null,
   posts: [],
+  successFetch: false,
+  loadingFetch: false,
   signIn: async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      toast({
+        title: `Signed in successfully`,
+      });
     } catch (error) {
       const firebaseError = error as FirebaseError;
       toast({
@@ -83,6 +93,12 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   },
   setPosts: ({ posts }: { posts: object }) => {
     set({ posts });
+  },
+  setSuccessFetch: ({ status }: { status: boolean }) => {
+    set({ successFetch: status });
+  },
+  setLoadingFetch: ({ status }: { status: boolean }) => {
+    set({ loadingFetch: status });
   },
 }));
 

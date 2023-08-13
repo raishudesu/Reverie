@@ -41,6 +41,7 @@ const SignUpForm = () => {
     defaultValues: {
       email: "", // Set your default email value here
       password: "", // Set your default password value here
+      confirmPassword: "",
     },
   });
 
@@ -59,10 +60,8 @@ const SignUpForm = () => {
 
   return (
     <Form {...form}>
-      <div className="bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461] flex flex-col gap-4 p-10 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
-        <div className="text-3xl">
-          Sign up to <span className="font-bold">Reverie</span>
-        </div>
+      <div className="flex flex-col gap-4 p-10 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
+        <div className="text-3xl font-semibold">Create an account</div>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full flex flex-col gap-2"

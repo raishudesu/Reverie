@@ -1,46 +1,17 @@
 import { ModeToggle } from "./mode-toggle";
 import { SheetSide } from "./sheetSide";
-import { Button } from "./ui/button";
 import { useFirebaseServices } from "@/stores/useFirebase";
-import { toast } from "./ui/use-toast";
-import { MdLogout } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const navigate = useNavigate();
-  const { currentUser, signOut } = useFirebaseServices();
-  const userSignOut = () => {
-    try {
-      signOut();
-      toast({
-        title: "User signed out.",
-      });
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { currentUser } = useFirebaseServices();
   return (
-    <div className="bg-white dark:bg-black fixed top-0 w-full h-[3.5em] shadow-sm shadow-gray-200 dark:shadow-gray-700 flex justify-center items-center">
+    <div className="fixed top-0 p-2 w-full h-[3.5em] shadow-sm shadow-gray-200 dark:shadow-gray-700 flex justify-center items-center">
       <div className="w-full md:w-[75%] flex justify-between items-center gap-4">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center gap-2">
           <SheetSide />
           <h1 className="font-bold text-2xl">Reverie</h1>
         </div>
-
-        <div className="hidden md:flex items-center gap-2">
-          {currentUser ? (
-            <Button
-              variant={"ghost"}
-              onClick={userSignOut}
-              className="flex gap-2 items-center"
-            >
-              Sign out
-              <MdLogout size={20} />
-            </Button>
-          ) : null}
-          <ModeToggle />
-        </div>
+        {!currentUser ? <ModeToggle /> : null}
       </div>
     </div>
   );

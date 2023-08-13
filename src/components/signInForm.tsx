@@ -13,10 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
 import { FcGoogle } from "react-icons/fc";
 import { useFirebaseServices } from "@/stores/useFirebase";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const FormSchema = z.object({
@@ -30,7 +28,7 @@ const FormSchema = z.object({
 
 const SignInForm = () => {
   const navigate = useNavigate();
-  const { signIn, currentUser } = useFirebaseServices();
+  const { signIn } = useFirebaseServices();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -43,11 +41,6 @@ const SignInForm = () => {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       await signIn(data.email, data.password);
-      currentUser
-        ? toast({
-            title: `Welcome ${data.email}`,
-          })
-        : null;
       form.reset();
       navigate("/home");
     } catch (error) {
@@ -55,16 +48,14 @@ const SignInForm = () => {
     }
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     console.log(currentUser);
-  }, [currentUser]);
+  }, [currentUser]); */
 
   return (
     <Form {...form}>
-      <div className="bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461] flex flex-col gap-4 p-10 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
-        <div className="text-3xl">
-          Sign in to <span className="font-bold">Reverie</span>
-        </div>
+      <div className="flex flex-col gap-4 p-10 shadow-sm shadow-gray-200 dark:shadow-gray-700 rounded-lg">
+        <div className="text-3xl font-semibold text-center">Sign in</div>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full flex flex-col gap-2"

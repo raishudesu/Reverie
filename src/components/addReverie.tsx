@@ -54,11 +54,11 @@ const AddReverie = () => {
           name="post"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Post reverie</FormLabel>
+              <FormLabel className="text-xl">Post reverie</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="What's happening?"
-                  className="resize-none"
+                  className="resize-none text-md"
                   {...field}
                 />
               </FormControl>
@@ -66,7 +66,7 @@ const AddReverie = () => {
             </FormItem>
           )}
         />
-        <Button className="px-6" type="submit">
+        <Button className="w-full lg:w-[100px] px-6" type="submit">
           Post
         </Button>
       </form>
