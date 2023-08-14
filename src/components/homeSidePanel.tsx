@@ -77,14 +77,20 @@ const HomeSidePanel = () => {
               ) : null}
               <h1 className="text-sm">{data?.username}</h1>
             </div>
-            <div className="flex gap-2 font-semibold items-center text-xl">
+            <button
+              className="flex gap-2 font-semibold items-center text-xl"
+              onClick={() => navigate("/home")}
+            >
               <AiOutlineHome size={20} />
               Home
-            </div>
-            <div className="flex gap-2 font-semibold items-center text-xl">
+            </button>
+            <button
+              className="flex gap-2 font-semibold items-center text-xl"
+              onClick={() => navigate("/home/profile")}
+            >
               <AiOutlineUser size={20} />
               Profile
-            </div>
+            </button>
             <div className="flex gap-2 font-semibold items-center text-xl">
               <AiOutlineBell size={20} />
               Notifications

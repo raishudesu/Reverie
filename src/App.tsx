@@ -7,6 +7,8 @@ import SignUpForm from "./components/signUpForm";
 import Protected from "./components/protected";
 import Home from "./pages/home";
 import Header from "./components/header";
+import Profile from "./pages/profile";
+import HomePosts from "./pages/homePosts";
 
 function App() {
   return (
@@ -19,13 +21,15 @@ function App() {
             <Route path="/signup" element={<SignUpForm />} />
           </Route>
           <Route
-            path="/home"
             element={
               <Protected>
                 <Home />
               </Protected>
             }
-          />
+          >
+            <Route path="/home" element={<HomePosts />} />
+            <Route path="/home/profile" element={<Profile />} />
+          </Route>
         </Routes>
         <Toaster />
       </ThemeProvider>
