@@ -1,4 +1,4 @@
-import { AiOutlineBell, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineBell, AiOutlineHome, AiOutlineUser } from "react-icons/ai";
 import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
 import { MdLogout } from "react-icons/md";
@@ -76,6 +76,10 @@ const HomeSidePanel = () => {
                 <BiLoaderAlt className="animate-spin" size={20} />
               ) : null}
               <h1 className="text-sm">{data?.username}</h1>
+            </div>
+            <div className="flex gap-2 font-semibold items-center text-xl">
+              <AiOutlineHome size={20} />
+              Home
             </div>
             <div className="flex gap-2 font-semibold items-center text-xl">
               <AiOutlineUser size={20} />

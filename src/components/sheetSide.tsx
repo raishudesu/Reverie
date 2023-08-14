@@ -8,7 +8,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { AiOutlineBell, AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
+import {
+  AiOutlineBell,
+  AiOutlineHome,
+  AiOutlineMenu,
+  AiOutlineUser,
+} from "react-icons/ai";
 import { ModeToggle } from "./mode-toggle";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { toast } from "./ui/use-toast";
@@ -57,6 +62,10 @@ export function SheetSide() {
                       <BiLoaderAlt className="animate-spin" size={20} />
                     ) : null}
                     <h1 className="text-sm">{username}</h1>
+                  </div>
+                  <div className="flex gap-2 font-semibold items-center text-xl">
+                    <AiOutlineHome size={20} />
+                    Home
                   </div>
                   <div className="flex gap-2 font-semibold items-center text-xl">
                     <AiOutlineUser size={20} />

@@ -8,14 +8,19 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { AiOutlineEdit } from "react-icons/ai";
 import { Textarea } from "./ui/textarea";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useState } from "react";
 
-const UpdateDialog = ({ postId }: { postId: number }) => {
-  const [updatedPost, setUpdatedPost] = useState("");
+const UpdateDialog = ({
+  postId,
+  currentContent,
+}: {
+  postId: number;
+  currentContent: string;
+}) => {
+  const [updatedPost, setUpdatedPost] = useState(currentContent);
   const { updatePost, currentUser } = useFirebaseServices();
   const uid = currentUser?.uid;
   return (
@@ -34,12 +39,9 @@ const UpdateDialog = ({ postId }: { postId: number }) => {
         </DialogHeader>
         <div className="flex w-full ">
           <div className="w-full flex justify-center items-center gap-4">
-            <Label htmlFor="post" className="text-right">
-              Post
-            </Label>
             <Textarea
               id="post"
-              className="col-span-3 w-full"
+              className="col-span-3 w-full resize-none"
               placeholder="edit post"
               value={updatedPost}
               onChange={(e) => setUpdatedPost(e.target.value)}
@@ -47,12 +49,14 @@ const UpdateDialog = ({ postId }: { postId: number }) => {
           </div>
         </div>
         <DialogFooter>
-          <Button
-            type="submit"
-            onClick={() => updatePost(uid, postId, updatedPost)}
-          >
-            Save changes
-          </Button>
+          <DialogTrigger>
+            <Button
+              type="submit"
+              onClick={() => updatePost(uid, postId, updatedPost)}
+            >
+              Save changes
+            </Button>
+          </DialogTrigger>
         </DialogFooter>
       </DialogContent>
     </Dialog>

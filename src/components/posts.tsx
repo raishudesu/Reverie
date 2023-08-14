@@ -49,7 +49,7 @@ const Posts = () => {
                   <CardFooter className="text-xs text-gray-500 flex justify-between w-full flex-wrap">
                     <div>Posted at: {createdAtString}</div>
                     <div className="flex items-center gap-3">
-                      <UpdateDialog postId={postId} />
+                      <UpdateDialog postId={postId} currentContent={content} />
                       <DeleteDialog postId={postId} />
                     </div>
                   </CardFooter>
