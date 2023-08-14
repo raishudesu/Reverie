@@ -6,50 +6,38 @@ import { toast } from "./ui/use-toast";
 import { db, useFirebaseServices } from "@/stores/useFirebase";
 import { useNavigate } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 import { BiLoaderAlt } from "react-icons/bi";
-import { useEffect } from "react";
 
 const HomeSidePanel = () => {
   const navigate = useNavigate();
-  const { currentUser, signOut, setUsername } = useFirebaseServices();
+  const { currentUser, signOut, setUsername, username } = useFirebaseServices();
   const uid = currentUser?.uid;
   const usernameRef = doc(db, `users/${uid}`);
 
-  const getUsername = async () => {
-    try {
-      const docSnap = await getDoc(usernameRef);
-      if (docSnap.exists()) {
-        return docSnap.data();
-      } else {
-        // docSnap.data() will be undefined in this case
-        console.log("No such document!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const getUsername = () => {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = onSnapshot(usernameRef, (doc) => {
+        if (doc.exists()) {
+          const usernameData = doc.data();
+          setUsername(usernameData.username);
+          resolve(usernameData);
+        } else {
+          // Handle the case where the document doesn't exist
+          reject(new Error("No such document!"));
+        }
+      });
+
+      // Unsubscribe from the listener when not needed anymore
+      return unsubscribe;
+    });
   };
-  const {
-    isLoading,
-    isSuccess,
-    data = {},
-  } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: ["userDetails"],
     queryFn: getUsername,
     refetchOnWindowFocus: false,
   });
-
-  useEffect(() => {
-    const handleUsername = () => {
-      if (isSuccess) {
-        setUsername(data.username);
-      } else {
-        null;
-      }
-    };
-    handleUsername();
-  }, [data, setUsername, isSuccess]);
 
   const userSignOut = () => {
     try {
@@ -75,7 +63,7 @@ const HomeSidePanel = () => {
               {isLoading ? (
                 <BiLoaderAlt className="animate-spin" size={20} />
               ) : null}
-              <h1 className="text-sm">{data?.username}</h1>
+              <h1 className="text-sm font-bold">{username}</h1>
             </div>
             <button
               className="flex gap-2 font-semibold items-center text-xl"

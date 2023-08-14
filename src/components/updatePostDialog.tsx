@@ -8,12 +8,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AiOutlineEdit } from "react-icons/ai";
 import { Textarea } from "./ui/textarea";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useState } from "react";
+import { MdModeEdit } from "react-icons/md";
 
-const UpdateDialog = ({
+const UpdatePostDialog = ({
   postId,
   currentContent,
 }: {
@@ -27,7 +27,7 @@ const UpdateDialog = ({
     <Dialog>
       <DialogTrigger asChild>
         <button className="hover:scale-[1.2] transition ease-in-out">
-          <AiOutlineEdit size={25} />
+          <MdModeEdit size={22} />
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -41,8 +41,9 @@ const UpdateDialog = ({
           <div className="w-full flex justify-center items-center gap-4">
             <Textarea
               id="post"
-              className="col-span-3 w-full resize-none"
+              className="col-span-3 w-full scrollbar-thin scrollbar-thumb-gray-400"
               placeholder="edit post"
+              rows={6}
               value={updatedPost}
               onChange={(e) => setUpdatedPost(e.target.value)}
             />
@@ -63,4 +64,4 @@ const UpdateDialog = ({
   );
 };
 
-export default UpdateDialog;
+export default UpdatePostDialog;

@@ -20,12 +20,14 @@ import { toast } from "./ui/use-toast";
 import { MdLogout } from "react-icons/md";
 import { BiLoaderAlt } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 const SHEET_SIDES = ["left"] as const;
 
 type SheetSide = (typeof SHEET_SIDES)[number];
 
 export function SheetSide() {
+  const navigate = useNavigate();
   const { currentUser, signOut, loadingFetch, username } =
     useFirebaseServices();
   const userSignOut = () => {
@@ -63,14 +65,25 @@ export function SheetSide() {
                     ) : null}
                     <h1 className="text-sm">{username}</h1>
                   </div>
-                  <div className="flex gap-2 font-semibold items-center text-xl">
-                    <AiOutlineHome size={20} />
-                    Home
-                  </div>
-                  <div className="flex gap-2 font-semibold items-center text-xl">
-                    <AiOutlineUser size={20} />
-                    Profile
-                  </div>
+                  <SheetTrigger asChild>
+                    <button
+                      className="flex gap-2 font-semibold items-center text-xl"
+                      onClick={() => navigate("/home")}
+                    >
+                      <AiOutlineHome size={20} />
+                      Home
+                    </button>
+                  </SheetTrigger>
+                  <SheetTrigger asChild>
+                    <button
+                      className="flex gap-2 font-semibold items-center text-xl"
+                      onClick={() => navigate("/home/profile")}
+                    >
+                      <AiOutlineUser size={20} />
+                      Profile
+                    </button>
+                  </SheetTrigger>
+
                   <div className="flex gap-2 font-semibold items-center text-xl">
                     <AiOutlineBell size={20} />
                     Notifications

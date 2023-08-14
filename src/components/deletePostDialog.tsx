@@ -12,7 +12,7 @@ import {
 import { BsFillTrashFill } from "react-icons/bs";
 import { useFirebaseServices } from "@/stores/useFirebase";
 
-const DeleteDialog = ({ postId }: { postId: number }) => {
+const DeletePostDialog = ({ postId }: { postId: number }) => {
   const { deletePost, currentUser } = useFirebaseServices();
   const uid = currentUser?.uid;
   return (
@@ -42,4 +42,4 @@ const DeleteDialog = ({ postId }: { postId: number }) => {
   );
 };
 
-export default DeleteDialog;
+export default DeletePostDialog;

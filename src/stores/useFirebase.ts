@@ -45,6 +45,7 @@ interface IFirebase {
     postId: number,
     updatedPost: string
   ) => void;
+  updateUsername: (uid: string | undefined, newUsername: string) => void;
 }
 
 const auth = getAuth(app);
@@ -161,6 +162,7 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
     try {
       await updateDoc(postRef, {
         content: updatedPost,
+        editedAt: new Date(),
       });
       toast({
         title: `Post updated`,
@@ -168,6 +170,22 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
     } catch (error) {
       toast({
         title: `Post failed to update`,
+      });
+      console.log(error);
+    }
+  },
+  updateUsername: async (uid: string | undefined, newUsername: string) => {
+    const userRef = doc(db, `users/${uid}`);
+    try {
+      await updateDoc(userRef, {
+        username: newUsername,
+      });
+      toast({
+        title: `Username updated`,
+      });
+    } catch (error) {
+      toast({
+        title: `Username failed to update`,
       });
       console.log(error);
     }

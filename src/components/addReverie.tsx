@@ -18,14 +18,9 @@ import { useFirebaseServices } from "@/stores/useFirebase";
 import { AiOutlineUser } from "react-icons/ai";
 
 const FormSchema = z.object({
-  post: z
-    .string()
-    .min(3, {
-      message: "A post must be at least 3 characters.",
-    })
-    .max(160, {
-      message: "A post must not be longer than 30 characters.",
-    }),
+  post: z.string().min(3, {
+    message: "A post must be at least 3 characters.",
+  }),
 });
 
 const AddReverie = () => {
@@ -59,12 +54,12 @@ const AddReverie = () => {
                 <div className="md:hidden rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
                   <AiOutlineUser size={20} />
                 </div>
-                Post reverie
+                Post
               </FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="What's up?"
-                  className="resize-none text-md"
+                  className="text-md"
                   {...field}
                 />
               </FormControl>
