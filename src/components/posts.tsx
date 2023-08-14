@@ -9,12 +9,9 @@ import {
 } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
 import { Timestamp } from "firebase/firestore";
-import {
-  AiOutlineEdit,
-  AiOutlineShareAlt,
-  AiOutlineUser,
-} from "react-icons/ai";
+import { AiOutlineUser } from "react-icons/ai";
 import DeleteDialog from "./deleteDialog";
+import UpdateDialog from "./updateDialog";
 
 const Posts = () => {
   const { posts, successFetch } = useFirebaseServices();
@@ -52,8 +49,7 @@ const Posts = () => {
                   <CardFooter className="text-xs text-gray-500 flex justify-between w-full flex-wrap">
                     <div>Posted at: {createdAtString}</div>
                     <div className="flex items-center gap-3">
-                      <AiOutlineEdit size={20} />
-                      <AiOutlineShareAlt size={20} />
+                      <UpdateDialog postId={postId} />
                       <DeleteDialog postId={postId} />
                     </div>
                   </CardFooter>

@@ -15,6 +15,7 @@ import {
   setDoc,
   deleteDoc,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { toast } from "@/components/ui/use-toast";
 import { FirebaseError } from "firebase/app";
@@ -39,6 +40,11 @@ interface IFirebase {
   setLoadingFetch: ({ status }: { status: boolean }) => void;
   deletePost: (uid: string | undefined, postId: number) => void;
   setUsername: (username: string) => void;
+  updatePost: (
+    uid: string | undefined,
+    postId: number,
+    updatedPost: string
+  ) => void;
 }
 
 const auth = getAuth(app);
@@ -145,6 +151,26 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   },
   setUsername: (username: string) => {
     set({ username: username });
+  },
+  updatePost: async (
+    uid: string | undefined,
+    postId: number,
+    updatedPost: string
+  ) => {
+    const postRef = doc(db, `users/${uid}/posts/${postId}`);
+    try {
+      await updateDoc(postRef, {
+        content: updatedPost,
+      });
+      toast({
+        title: `Post updated`,
+      });
+    } catch (error) {
+      toast({
+        title: `Post failed to update`,
+      });
+      console.log(error);
+    }
   },
 }));
 
