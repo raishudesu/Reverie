@@ -73,11 +73,7 @@ const EditEmailDialog = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="your@email.com"
-                      type="email"
-                      {...field}
-                    />
+                    <Input placeholder="your@email.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

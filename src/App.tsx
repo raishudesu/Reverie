@@ -10,6 +10,7 @@ import Header from "./components/header";
 import Profile from "./pages/profile";
 import HomePosts from "./pages/homePosts";
 import Settings from "./pages/settings";
+import Notifications from "./pages/notifications";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           >
             <Route path="/home" element={<HomePosts />} />
             <Route path="/home/profile" element={<Profile />} />
+            <Route path="/home/notifications" element={<Notifications />} />
             <Route path="/home/settings" element={<Settings />} />
           </Route>
         </Routes>
