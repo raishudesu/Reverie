@@ -26,12 +26,13 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import { FirebaseError } from "firebase/app";
 
-type UserDetails = {
+/* type UserDetails = {
   uid: string;
   email: string | null;
-};
+  providerData: [providerId: string];
+}; */
 interface IFirebase {
-  currentUser: UserDetails | null;
+  currentUser: User | null;
   posts: DocumentData;
   successFetch: boolean;
   loadingFetch: boolean;

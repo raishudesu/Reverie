@@ -31,7 +31,7 @@ const FormSchema = z.object({
 
 const EditEmailDialog = () => {
   const [open, setOpen] = useState(false);
-  const { updateUserEmail } = useFirebaseServices();
+  const { updateUserEmail, currentUser } = useFirebaseServices();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -47,12 +47,19 @@ const EditEmailDialog = () => {
       console.log(error);
     }
   };
+  const provider = currentUser?.providerData[0].providerId;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"ghost"} className="flex gap-2">
-          <RxUpdate size={20} /> Update email
-        </Button>
+        {provider === "password" ? (
+          <Button variant={"ghost"} className="flex gap-2">
+            <RxUpdate size={20} /> Update email
+          </Button>
+        ) : (
+          <Button variant={"ghost"} disabled className="flex gap-2">
+            <RxUpdate size={20} /> Update email
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -37,7 +37,7 @@ const FormSchema = z
 
 const UpdatePwdDialog = () => {
   const [open, setOpen] = useState(false);
-  const { updateUserPwd } = useFirebaseServices();
+  const { updateUserPwd, currentUser } = useFirebaseServices();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -56,13 +56,19 @@ const UpdatePwdDialog = () => {
       console.log(error);
     }
   };
-
+  const provider = currentUser?.providerData[0].providerId;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant={"ghost"} className="flex gap-2">
-          <BsKey size={20} /> Change password
-        </Button>
+        {provider === "password" ? (
+          <Button variant={"ghost"} className="flex gap-2">
+            <BsKey size={20} /> Change password
+          </Button>
+        ) : (
+          <Button variant={"ghost"} disabled className="flex gap-2">
+            <BsKey size={20} /> Change password
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

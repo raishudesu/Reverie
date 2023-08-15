@@ -8,6 +8,7 @@ import DeleteAccDialog from "@/components/deleteAccDialog";
 
 const Settings = () => {
   const { currentUser, username } = useFirebaseServices();
+  const provider = currentUser?.providerData[0].providerId;
   return (
     <div className="w-full h-full">
       <div className="h-full flex flex-col justify-between">
@@ -26,6 +27,12 @@ const Settings = () => {
               <div>User ID: {currentUser?.uid}</div>
             </div>
             <div className="flex flex-col items-start">
+              {provider === "google.com" ? (
+                <p className="text-sm text-muted-foreground mb-4">
+                  Note: Google account is used. Cannot change email and
+                  password.
+                </p>
+              ) : null}
               <EditEmailDialog />
               <UpdatePwdDialog />
               <DeleteAccDialog />
