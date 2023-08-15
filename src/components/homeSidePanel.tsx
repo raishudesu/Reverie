@@ -16,7 +16,6 @@ const HomeSidePanel = () => {
   const { currentUser, signOut, setUsername, username } = useFirebaseServices();
   const uid = currentUser?.uid;
   const usernameRef = doc(db, `users/${uid}`);
-
   const getUsername = () => {
     return new Promise((resolve, reject) => {
       const unsubscribe = onSnapshot(usernameRef, (doc) => {

@@ -17,12 +17,14 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { CgNotes } from "react-icons/cg";
+import { useState } from "react";
 
 const SHEET_SIDES = ["left"] as const;
 
 type SheetSide = (typeof SHEET_SIDES)[number];
 
 export function SheetSide() {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { currentUser, signOut, loadingFetch, username } =
     useFirebaseServices();
@@ -39,7 +41,7 @@ export function SheetSide() {
   return (
     <div className="md:hidden">
       {SHEET_SIDES.map((side) => (
-        <Sheet key={side}>
+        <Sheet key={side} open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button variant={"outline"}>
               <AiOutlineMenu size={20} />
@@ -61,38 +63,46 @@ export function SheetSide() {
                     ) : null}
                     <h1 className="text-md font-bold">{username}</h1>
                   </div>
-                  <SheetTrigger asChild>
-                    <button
-                      className="flex gap-2 font-semibold items-center text-xl"
-                      onClick={() => navigate("/home")}
-                    >
-                      <CgNotes size={20} />
-                      Entries
-                    </button>
-                  </SheetTrigger>
-                  <SheetTrigger asChild>
-                    <button
-                      className="flex gap-2 font-semibold items-center text-xl"
-                      onClick={() => navigate("/home/profile")}
-                    >
-                      <AiOutlineUser size={20} />
-                      Profile
-                    </button>
-                  </SheetTrigger>
-
-                  <div className="flex gap-2 font-semibold items-center text-xl">
+                  <button
+                    className="flex gap-2 font-semibold items-center text-xl"
+                    onClick={() => {
+                      navigate("/home");
+                      setOpen(false);
+                    }}
+                  >
+                    <CgNotes size={20} />
+                    Entries
+                  </button>
+                  <button
+                    className="flex gap-2 font-semibold items-center text-xl"
+                    onClick={() => {
+                      navigate("/home/profile");
+                      setOpen(false);
+                    }}
+                  >
+                    <AiOutlineUser size={20} />
+                    Profile
+                  </button>
+                  <button
+                    className="flex gap-2 font-semibold items-center text-xl"
+                    onClick={() => {
+                      navigate("/home/notifications");
+                      setOpen(false);
+                    }}
+                  >
                     <AiOutlineBell size={20} />
                     Notifications
-                  </div>
-                  <SheetTrigger asChild>
-                    <button
-                      className="flex gap-2 font-semibold items-center text-xl"
-                      onClick={() => navigate("/home/settings")}
-                    >
-                      <FiSettings size={20} />
-                      Settings
-                    </button>
-                  </SheetTrigger>
+                  </button>
+                  <button
+                    className="flex gap-2 font-semibold items-center text-xl"
+                    onClick={() => {
+                      navigate("/home/settings");
+                      setOpen(false);
+                    }}
+                  >
+                    <FiSettings size={20} />
+                    Settings
+                  </button>
 
                   <ModeToggle />
                 </div>

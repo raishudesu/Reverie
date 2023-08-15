@@ -28,7 +28,7 @@ const FormSchema = z.object({
 
 const SignInForm = () => {
   const navigate = useNavigate();
-  const { signIn } = useFirebaseServices();
+  const { signIn, signInWithGoogle } = useFirebaseServices();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -91,6 +91,7 @@ const SignInForm = () => {
           <Button
             variant={"outline"}
             className="w-full flex items-center gap-2"
+            onClick={signInWithGoogle}
           >
             <FcGoogle size={20} />
             Sign in with Google

@@ -10,6 +10,8 @@ import {
   User,
   updatePassword,
   deleteUser,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import {
   DocumentData,
@@ -37,6 +39,7 @@ interface IFirebase {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, username: string) => Promise<void>;
   signOut: () => void;
+  signInWithGoogle: () => void;
   initializeAuthStateListener: () => void;
   addPost: (content: string) => void;
   setPosts: ({ posts }: { posts: object }) => void;
@@ -90,6 +93,7 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
             email: email,
             password: password,
             createdAt: serverTimestamp(),
+            providerId: user.providerData[0].providerId,
           })
             .then(() => {
               toast({
@@ -117,8 +121,38 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
       set({ currentUser: user });
     });
   },
+  signInWithGoogle: () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        const uid = user.uid;
+        setDoc(doc(db, "users", uid), {
+          username: user.displayName,
+          uid: uid,
+          email: user.email,
+          createdAt: serverTimestamp(),
+          providerId: user.providerData[0].providerId,
+        })
+          .then(() => {
+            toast({
+              title: `Account successfully created`,
+            });
+          })
+          .catch((error) => {
+            toast({
+              title: `Account creation failed. Error: ${error}`,
+            });
+          });
+      })
+      .catch((error) => {
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        console.log(credential);
+      });
+  },
   addPost: async (content: string) => {
     const user = useFirebaseServices.getState().currentUser;
+    const username = useFirebaseServices.getState().username;
     try {
       const uid = user?.uid;
       const postId = Date.now().toString();
@@ -128,6 +162,9 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
         created_at: new Date(),
         content: content,
         postId: postId,
+        authorUsername: username,
+        authorId: uid,
+        authorEmail: user?.email,
       };
       await setDoc(docRef, postData);
     } catch (error) {
