@@ -50,7 +50,7 @@ const AddReverie = () => {
           name="post"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
-              <FormLabel className="text-xl flex justify-center items-center gap-4">
+              <FormLabel className="text-xl flex justify-center items-center gap-2">
                 <div className="md:hidden rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
                   <AiOutlineUser size={20} />
                 </div>

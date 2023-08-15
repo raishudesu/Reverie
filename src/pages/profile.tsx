@@ -26,7 +26,7 @@ const Profile = () => {
             </div>
           </CardHeader>
           <CardContent className="text-muted-foreground">
-            More features coming soon.
+            Welcome to Reverie. More features coming soon.
           </CardContent>
         </Card>
       </div>

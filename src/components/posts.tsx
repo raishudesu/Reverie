@@ -18,7 +18,7 @@ const Posts = () => {
 
   return (
     <>
-      <div className="flex flex-col-reverse gap-6 ">
+      <div className="flex flex-col-reverse gap-6">
         {successFetch ? (
           posts.map(
             (

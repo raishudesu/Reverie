@@ -20,11 +20,12 @@ const UpdatePostDialog = ({
   postId: number;
   currentContent: string;
 }) => {
+  const [open, setOpen] = useState(false);
   const [updatedPost, setUpdatedPost] = useState(currentContent);
   const { updatePost, currentUser } = useFirebaseServices();
   const uid = currentUser?.uid;
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className="hover:scale-[1.2] transition ease-in-out">
           <MdModeEdit size={22} />
@@ -41,7 +42,7 @@ const UpdatePostDialog = ({
           <div className="w-full flex justify-center items-center gap-4">
             <Textarea
               id="post"
-              className="col-span-3 w-full scrollbar-thin scrollbar-thumb-gray-400"
+              className="col-span-3 w-full scrollbar-thin scrollbar-thumb-gray-400 text-md"
               placeholder="edit post"
               rows={6}
               value={updatedPost}
@@ -50,14 +51,14 @@ const UpdatePostDialog = ({
           </div>
         </div>
         <DialogFooter>
-          <DialogTrigger>
-            <Button
-              type="submit"
-              onClick={() => updatePost(uid, postId, updatedPost)}
-            >
-              Save changes
-            </Button>
-          </DialogTrigger>
+          <Button
+            onClick={() => {
+              updatePost(uid, postId, updatedPost);
+              setOpen(false);
+            }}
+          >
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

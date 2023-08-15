@@ -25,7 +25,7 @@ const HomePosts = () => {
       });
 
       // Unsubscribe from the listener when component unmounts
-      return unsubscribe;
+      if (currentUser) return unsubscribe;
     });
   };
 

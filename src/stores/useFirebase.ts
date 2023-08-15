@@ -6,6 +6,10 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updateEmail,
+  User,
+  updatePassword,
+  deleteUser,
 } from "firebase/auth";
 import {
   DocumentData,
@@ -46,6 +50,9 @@ interface IFirebase {
     updatedPost: string
   ) => void;
   updateUsername: (uid: string | undefined, newUsername: string) => void;
+  updateUserEmail: (email: string) => void;
+  updateUserPwd: (password: string) => void;
+  deleteUserAcc: () => void;
 }
 
 const auth = getAuth(app);
@@ -186,6 +193,47 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
     } catch (error) {
       toast({
         title: `Username failed to update`,
+      });
+      console.log(error);
+    }
+  },
+  updateUserEmail: (email: string) => {
+    try {
+      updateEmail(auth.currentUser as User, email);
+      toast({
+        title: `Email updated`,
+      });
+    } catch (error) {
+      toast({
+        title: `Email failed to update`,
+      });
+      console.log(error);
+    }
+  },
+  updateUserPwd: (password: string) => {
+    try {
+      updatePassword(auth.currentUser as User, password);
+      toast({
+        title: `Password updated`,
+      });
+    } catch (error) {
+      toast({
+        title: `Password failed to update`,
+      });
+      console.log(error);
+    }
+  },
+  deleteUserAcc: async () => {
+    const user = useFirebaseServices.getState().currentUser;
+    try {
+      deleteUser(auth.currentUser as User);
+      await deleteDoc(doc(db, `users/${user?.uid}`));
+      toast({
+        title: `Account deletion successful`,
+      });
+    } catch (error) {
+      toast({
+        title: `Account deletion failed`,
       });
       console.log(error);
     }

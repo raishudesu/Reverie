@@ -15,11 +15,12 @@ import { useFirebaseServices } from "@/stores/useFirebase";
 import { MdModeEdit } from "react-icons/md";
 
 const EditUsernameDialog = () => {
+  const [open, setOpen] = useState(false);
   const { updateUsername, currentUser } = useFirebaseServices();
   const [newUsername, setNewUsername] = useState("");
   const uid = currentUser?.uid;
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className="hover:scale-[1.2] transition ease-in-out">
           <MdModeEdit size={20} />
@@ -33,7 +34,7 @@ const EditUsernameDialog = () => {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="flex flex-col items-start gap-4">
             <Label htmlFor="username" className="text-right">
               Username
             </Label>
@@ -47,15 +48,15 @@ const EditUsernameDialog = () => {
           </div>
         </div>
         <DialogFooter>
-          <DialogTrigger>
-            {" "}
-            <Button
-              type="submit"
-              onClick={() => updateUsername(uid, newUsername)}
-            >
-              Save changes
-            </Button>
-          </DialogTrigger>
+          <Button
+            type="submit"
+            onClick={() => {
+              updateUsername(uid, newUsername);
+              setOpen(false);
+            }}
+          >
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

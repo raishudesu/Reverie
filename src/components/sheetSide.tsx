@@ -8,12 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  AiOutlineBell,
-  AiOutlineHome,
-  AiOutlineMenu,
-  AiOutlineUser,
-} from "react-icons/ai";
+import { AiOutlineBell, AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
 import { ModeToggle } from "./mode-toggle";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { toast } from "./ui/use-toast";
@@ -21,6 +16,7 @@ import { MdLogout } from "react-icons/md";
 import { BiLoaderAlt } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { CgNotes } from "react-icons/cg";
 
 const SHEET_SIDES = ["left"] as const;
 
@@ -63,15 +59,15 @@ export function SheetSide() {
                     {loadingFetch ? (
                       <BiLoaderAlt className="animate-spin" size={20} />
                     ) : null}
-                    <h1 className="text-sm">{username}</h1>
+                    <h1 className="text-md font-bold">{username}</h1>
                   </div>
                   <SheetTrigger asChild>
                     <button
                       className="flex gap-2 font-semibold items-center text-xl"
                       onClick={() => navigate("/home")}
                     >
-                      <AiOutlineHome size={20} />
-                      Home
+                      <CgNotes size={20} />
+                      Entries
                     </button>
                   </SheetTrigger>
                   <SheetTrigger asChild>
@@ -88,10 +84,15 @@ export function SheetSide() {
                     <AiOutlineBell size={20} />
                     Notifications
                   </div>
-                  <div className="flex gap-2 font-semibold items-center text-xl">
-                    <FiSettings size={20} />
-                    Settings
-                  </div>
+                  <SheetTrigger asChild>
+                    <button
+                      className="flex gap-2 font-semibold items-center text-xl"
+                      onClick={() => navigate("/home/settings")}
+                    >
+                      <FiSettings size={20} />
+                      Settings
+                    </button>
+                  </SheetTrigger>
 
                   <ModeToggle />
                 </div>

@@ -48,10 +48,6 @@ const SignInForm = () => {
     }
   };
 
-  /* useEffect(() => {
-    console.log(currentUser);
-  }, [currentUser]); */
-
   return (
     <Form {...form}>
       <div className="flex flex-col gap-4 p-10 border rounded-lg">

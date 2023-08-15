@@ -1,4 +1,4 @@
-import { AiOutlineBell, AiOutlineHome, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineBell, AiOutlineUser } from "react-icons/ai";
 import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
 import { MdLogout } from "react-icons/md";
@@ -9,6 +9,7 @@ import { FiSettings } from "react-icons/fi";
 import { doc, onSnapshot } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 import { BiLoaderAlt } from "react-icons/bi";
+import { CgNotes } from "react-icons/cg";
 
 const HomeSidePanel = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const HomeSidePanel = () => {
       });
 
       // Unsubscribe from the listener when not needed anymore
-      return unsubscribe;
+      if (currentUser) return unsubscribe;
     });
   };
   const { isLoading } = useQuery({
@@ -63,14 +64,14 @@ const HomeSidePanel = () => {
               {isLoading ? (
                 <BiLoaderAlt className="animate-spin" size={20} />
               ) : null}
-              <h1 className="text-sm font-bold">{username}</h1>
+              <h1 className="text-md font-bold">{username}</h1>
             </div>
             <button
               className="flex gap-2 font-semibold items-center text-xl"
               onClick={() => navigate("/home")}
             >
-              <AiOutlineHome size={20} />
-              Home
+              <CgNotes size={20} />
+              Entries
             </button>
             <button
               className="flex gap-2 font-semibold items-center text-xl"
@@ -83,10 +84,13 @@ const HomeSidePanel = () => {
               <AiOutlineBell size={20} />
               Notifications
             </div>
-            <div className="flex gap-2 font-semibold items-center text-xl">
+            <button
+              className="flex gap-2 font-semibold items-center text-xl"
+              onClick={() => navigate("/home/settings")}
+            >
               <FiSettings size={20} />
               Settings
-            </div>
+            </button>
 
             <ModeToggle />
           </div>
