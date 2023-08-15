@@ -18,7 +18,10 @@ const Posts = () => {
 
   return (
     <>
-      <div className="flex flex-col-reverse gap-6">
+      <div className="flex flex-col-reverse items-center gap-6">
+        {posts.length === 0 ? (
+          <div className="text-muted-foreground">Post your first Reverie.</div>
+        ) : null}
         {successFetch ? (
           posts.map(
             (
