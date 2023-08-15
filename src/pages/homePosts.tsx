@@ -44,14 +44,15 @@ const HomePosts = () => {
       <Card className="w-full p-4 shadow-md shadow-gray-200 dark:shadow-gray-700">
         <AddReverie />
       </Card>
+
       {isLoading && (
-        <div className="flex flex-col gap-6">
-          {Array.from({ length: 3 }).map((_, index) => (
-            <div key={index} className="w-full flex items-center space-x-4">
-              <Skeleton className="h-20 w-20 rounded-full" />
+        <div className="flex flex-col gap-9">
+          {Array.from({ length: 16 }).map((_, index) => (
+            <div key={index} className="flex items-center space-x-4 pl-2">
+              <Skeleton className="h-12 w-12 rounded-full" />
               <div className="space-y-2">
-                <Skeleton className="h-4 w-[500px]" />
-                <Skeleton className="h-4 w-[500px]" />
+                <Skeleton className="h-4 w-[220px]" />
+                <Skeleton className="h-4 w-[200px]" />
               </div>
             </div>
           ))}
