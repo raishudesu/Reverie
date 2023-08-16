@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Welcome from "../assets/welcome.svg";
 
 const Notifications = () => {
   return (
@@ -18,9 +19,14 @@ const Notifications = () => {
         <CardHeader className="flex flex-col justify-center items-start ">
           <CardTitle>Welcome to Reverie!</CardTitle>
         </CardHeader>
-        <CardContent className="text-muted-foreground">
+        <CardContent className="text-muted-foreground flex flex-col gap-4">
           Thank you for registering to Reverie. If you see this notification,
           you are probably one of its first users.
+          <img
+            src={Welcome}
+            alt=""
+            className="w-[50%] sm:max-w-[30%] md:max-w-[40%] lg:max-w-[30%] xl:max-w-[20%]"
+          />
         </CardContent>
       </Card>
     </div>
