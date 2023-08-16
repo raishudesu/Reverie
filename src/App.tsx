@@ -16,28 +16,26 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div>
-          <Header />
-          <Routes>
-            <Route element={<SignIn />}>
-              <Route path="/" element={<SignInForm />} />
-              <Route path="/signup" element={<SignUpForm />} />
-            </Route>
-            <Route
-              element={
-                <Protected>
-                  <Home />
-                </Protected>
-              }
-            >
-              <Route path="/home" element={<HomePosts />} />
-              <Route path="/home/profile" element={<Profile />} />
-              <Route path="/home/notifications" element={<Notifications />} />
-              <Route path="/home/settings" element={<Settings />} />
-            </Route>
-          </Routes>
-          <Toaster />
-        </div>
+        <Header />
+        <Routes>
+          <Route element={<SignIn />}>
+            <Route path="/" element={<SignInForm />} />
+            <Route path="/signup" element={<SignUpForm />} />
+          </Route>
+          <Route
+            element={
+              <Protected>
+                <Home />
+              </Protected>
+            }
+          >
+            <Route path="/home" element={<HomePosts />} />
+            <Route path="/home/profile" element={<Profile />} />
+            <Route path="/home/notifications" element={<Notifications />} />
+            <Route path="/home/settings" element={<Settings />} />
+          </Route>
+        </Routes>
+        <Toaster />
       </ThemeProvider>
     </BrowserRouter>
   );

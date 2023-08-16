@@ -38,7 +38,7 @@ const HomeSidePanel = () => {
   });
 
   return (
-    <div className=" hidden max-h-fit w-[40%] xl:w-[30%] 2xl:w-[20%] md:flex flex-col justify-start items-start p-4 gap-6 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
+    <div className=" hidden max-h-fit w-[45%] xl:w-[30%] 2xl:w-[20%] md:flex flex-col justify-start items-start p-4 gap-6 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
       <div className="grid gap-4 py-4 h-full">
         <div className="flex flex-col justify-between items-start gap-4">
           <div className="flex flex-col justify-start items-start gap-6">
