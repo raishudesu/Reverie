@@ -25,18 +25,12 @@ import {
 } from "firebase/firestore";
 import { toast } from "@/components/ui/use-toast";
 import { FirebaseError } from "firebase/app";
-
-/* type UserDetails = {
-  uid: string;
-  email: string | null;
-  providerData: [providerId: string];
-}; */
 interface IFirebase {
   currentUser: User | null;
   posts: DocumentData;
   successFetch: boolean;
   loadingFetch: boolean;
-  username: string | null;
+  username: string | undefined;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, username: string) => Promise<void>;
   signOut: () => void;
@@ -67,7 +61,7 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   posts: [],
   successFetch: false,
   loadingFetch: false,
-  username: null,
+  username: undefined,
   signIn: async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);

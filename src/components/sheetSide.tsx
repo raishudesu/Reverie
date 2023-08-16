@@ -18,6 +18,7 @@ import { FiSettings } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { CgNotes } from "react-icons/cg";
 import { useState } from "react";
+import { LucideBookKey } from "lucide-react";
 
 const SHEET_SIDES = ["left"] as const;
 
@@ -49,7 +50,9 @@ export function SheetSide() {
           </SheetTrigger>
           <SheetContent side={side}>
             <SheetHeader>
-              <SheetTitle className="text-2xl font-bold">Reverie</SheetTitle>
+              <SheetTitle className="flex justify-center">
+                <LucideBookKey size={30} />
+              </SheetTitle>
             </SheetHeader>
             <div className="grid gap-4 py-4 h-full">
               <div className="flex flex-col justify-between items-start gap-4">

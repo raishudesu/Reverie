@@ -3,22 +3,52 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { MdModeEdit } from "react-icons/md";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const EditUsernameDialog = () => {
   const [open, setOpen] = useState(false);
-  const { updateUsername, currentUser } = useFirebaseServices();
-  const [newUsername, setNewUsername] = useState("");
+  const { updateUsername, currentUser, username } = useFirebaseServices();
   const uid = currentUser?.uid;
+
+  const FormSchema = z.object({
+    username: z.string().min(3, {
+      message: "Username must be more than 3 characters.",
+    }),
+  });
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      username: "",
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    try {
+      updateUsername(uid, data.username);
+      setOpen(false);
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -33,31 +63,32 @@ const EditUsernameDialog = () => {
             Make changes to your profile here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="flex flex-col items-start gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              type="text"
-              placeholder="Set new username"
-              className="col-span-3"
-              value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button
-            type="submit"
-            onClick={() => {
-              updateUsername(uid, newUsername);
-              setOpen(false);
-            }}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full flex flex-col gap-2"
           >
-            Save changes
-          </Button>
-        </DialogFooter>
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={username as string | undefined}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="mt-4 md:self-end">
+              Save changes
+            </Button>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
