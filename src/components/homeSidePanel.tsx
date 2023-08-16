@@ -1,8 +1,5 @@
 import { AiOutlineBell, AiOutlineUser } from "react-icons/ai";
 import { ModeToggle } from "./mode-toggle";
-import { Button } from "./ui/button";
-import { MdLogout } from "react-icons/md";
-import { toast } from "./ui/use-toast";
 import { db, useFirebaseServices } from "@/stores/useFirebase";
 import { useNavigate } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
@@ -10,10 +7,11 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgNotes } from "react-icons/cg";
+import SignOutDialog from "./signOutDialog";
 
 const HomeSidePanel = () => {
   const navigate = useNavigate();
-  const { currentUser, signOut, setUsername, username } = useFirebaseServices();
+  const { currentUser, setUsername, username } = useFirebaseServices();
   const uid = currentUser?.uid;
   const usernameRef = doc(db, `users/${uid}`);
   const getUsername = () => {
@@ -38,18 +36,6 @@ const HomeSidePanel = () => {
     queryFn: getUsername,
     refetchOnWindowFocus: false,
   });
-
-  const userSignOut = () => {
-    try {
-      signOut();
-      toast({
-        title: "User signed out.",
-      });
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <div className=" hidden max-h-fit w-[40%] xl:w-[30%] 2xl:w-[20%] md:flex flex-col justify-start items-start p-4 gap-6 ">
@@ -99,14 +85,7 @@ const HomeSidePanel = () => {
 
           {currentUser ? (
             <div className="flex justify-start items-start w-full">
-              <Button
-                variant={"ghost"}
-                onClick={userSignOut}
-                className="flex gap-2 items-center text-xl p-0"
-              >
-                <MdLogout size={22} />
-                Sign out
-              </Button>
+              <SignOutDialog />
             </div>
           ) : null}
         </div>
