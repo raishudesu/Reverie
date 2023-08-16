@@ -5,7 +5,7 @@ import { LucideBookKey } from "lucide-react";
 const Header = () => {
   const { currentUser } = useFirebaseServices();
   return (
-    <div className="fixed top-0 p-2 w-full h-[3.5em] shadow-sm shadow-gray-200 dark:shadow-gray-700 flex justify-center items-center">
+    <div className="fixed top-0 p-2 w-full h-[3.5em] border-b flex justify-center items-center">
       <div
         className={
           currentUser

@@ -25,7 +25,7 @@ const Notifications = () => {
           <img
             src={Welcome}
             alt=""
-            className="w-[50%] sm:max-w-[30%] md:max-w-[40%] lg:max-w-[30%] xl:max-w-[20%]"
+            className="w-[50%] sm:max-w-[30%] md:max-w-[40%] lg:max-w-[30%] xl:max-w-[20%] self-center"
           />
         </CardContent>
       </Card>
