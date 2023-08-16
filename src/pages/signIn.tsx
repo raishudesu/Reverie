@@ -4,7 +4,6 @@ import { useFirebaseServices } from "@/stores/useFirebase";
 import Header from "@/components/header";
 import { BiLoaderAlt } from "react-icons/bi";
 import Dreamer from "../assets/dreamer.svg";
-import Process from "../assets/process.svg";
 
 const SignIn = () => {
   const navigate = useNavigate();
