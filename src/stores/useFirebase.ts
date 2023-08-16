@@ -131,12 +131,12 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
         })
           .then(() => {
             toast({
-              title: `Account successfully created`,
+              title: `Signed in successfully`,
             });
           })
           .catch((error) => {
             toast({
-              title: `Account creation failed. Error: ${error}`,
+              title: `Sign in failed. Error: ${error}`,
             });
           });
       })
