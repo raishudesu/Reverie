@@ -40,7 +40,7 @@ export function SheetSide() {
     }
   };
   return (
-    <div className="md:hidden">
+    <div className="md:hidden ">
       {SHEET_SIDES.map((side) => (
         <Sheet key={side} open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
@@ -54,7 +54,7 @@ export function SheetSide() {
                 <LucideBookKey size={30} />
               </SheetTitle>
             </SheetHeader>
-            <div className="grid gap-4 py-4 h-full">
+            <div className="grid gap-4 py-4 h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
               <div className="flex flex-col justify-between items-start gap-4">
                 <div className="flex flex-col justify-start items-start gap-6">
                   <div className="flex flex-col justify-center items-start gap-2">
