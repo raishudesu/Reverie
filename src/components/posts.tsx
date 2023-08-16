@@ -16,7 +16,6 @@ import moment from "moment";
 
 const Posts = () => {
   const { posts, successFetch } = useFirebaseServices();
-  console.log(posts);
   return (
     <>
       <div className="flex flex-col-reverse items-center gap-6">
