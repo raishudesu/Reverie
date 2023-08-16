@@ -12,10 +12,11 @@ import { AiOutlineUser } from "react-icons/ai";
 import UpdatePostDialog from "./updatePostDialog";
 import DeletePostDialog from "./deletePostDialog";
 import SkeletonLoader from "./skeleton";
+import moment from "moment";
 
 const Posts = () => {
   const { posts, successFetch } = useFirebaseServices();
-
+  console.log(posts);
   return (
     <>
       <div className="flex flex-col-reverse items-center gap-6">
@@ -39,8 +40,10 @@ const Posts = () => {
               index: number
             ) => {
               // Convert Firebase Timestamp to string
-              const createdAtString = created_at.toDate().toLocaleString();
-              const editedAtString = editedAt?.toDate().toLocaleString();
+              const createdAtString = moment.unix(created_at.seconds).fromNow();
+              const editedAtString = moment
+                .unix(editedAt?.seconds as number)
+                .fromNow();
 
               return (
                 <Card key={postId} className="w-full flex flex-col items-start">
@@ -59,8 +62,8 @@ const Posts = () => {
                   </CardContent>
                   <CardFooter className="text-xs text-gray-500 flex justify-between w-full flex-wrap">
                     <div className="flex flex-col gap-1 ">
-                      <div>Posted at: {createdAtString}</div>
-                      {editedAt ? <div>Edited at: {editedAtString}</div> : null}
+                      <div>Posted {createdAtString}</div>
+                      {editedAt ? <div>Edited {editedAtString}</div> : null}
                     </div>
                     <div className="flex items-center gap-3">
                       <UpdatePostDialog

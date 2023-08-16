@@ -86,7 +86,6 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
             username: username,
             uid: uid,
             email: email,
-            password: password,
             createdAt: serverTimestamp(),
             providerId: user.providerData[0].providerId,
           })
