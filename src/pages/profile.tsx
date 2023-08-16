@@ -7,7 +7,7 @@ const Profile = () => {
   const { username, currentUser } = useFirebaseServices();
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
       <div>
         <Card className="h-32 bg-gradient-to-r rounded-b-none from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]"></Card>
         <Card className="rounded-t-none">

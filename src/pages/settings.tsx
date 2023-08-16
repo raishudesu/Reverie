@@ -10,7 +10,7 @@ const Settings = () => {
   const { currentUser, username } = useFirebaseServices();
   const provider = currentUser?.providerData[0].providerId;
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
       <div className="h-full flex flex-col justify-between">
         <Card className="rounded-t-none h-full">
           <CardHeader className="flex flex-row justify-start items-center gap-2 ">
