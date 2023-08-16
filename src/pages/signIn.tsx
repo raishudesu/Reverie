@@ -39,7 +39,7 @@ const SignIn = () => {
               <img
                 src={Dreamer}
                 alt=""
-                className="hidden lg:block max-w-[60%] p-4"
+                className="hidden lg:block max-w-[50%] p-4"
               />
               <div className="hidden max-w-[20%] lg:flex flex-col"></div>
               <Outlet />
