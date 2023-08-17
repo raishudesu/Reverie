@@ -11,18 +11,15 @@ import { Timestamp } from "firebase/firestore";
 import { AiOutlineUser } from "react-icons/ai";
 import UpdatePostDialog from "./updatePostDialog";
 import DeletePostDialog from "./deletePostDialog";
-import SkeletonLoader from "./skeleton";
 import moment from "moment";
 
 const Posts = () => {
-  const { posts, successFetch } = useFirebaseServices();
+  const { posts } = useFirebaseServices();
+
   return (
     <>
       <div className="flex flex-col-reverse items-center gap-6">
-        {posts.length === 0 ? (
-          <div className="text-muted-foreground">Post your first Reverie.</div>
-        ) : null}
-        {successFetch ? (
+        {posts.length !== 0 ? (
           posts.map(
             (
               {
@@ -77,7 +74,7 @@ const Posts = () => {
             }
           )
         ) : (
-          <SkeletonLoader />
+          <div className="text-muted-foreground">Post your first Reverie.</div>
         )}
       </div>
     </>

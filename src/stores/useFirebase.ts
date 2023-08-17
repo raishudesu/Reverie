@@ -22,6 +22,7 @@ import {
   deleteDoc,
   serverTimestamp,
   updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { toast } from "@/components/ui/use-toast";
 import { FirebaseError } from "firebase/app";
@@ -36,10 +37,9 @@ interface IFirebase {
   signOut: () => void;
   signInWithGoogle: () => void;
   initializeAuthStateListener: () => void;
+  fetchPosts: () => void;
   addPost: (content: string) => void;
   setPosts: ({ posts }: { posts: object }) => void;
-  setSuccessFetch: ({ status }: { status: boolean }) => void;
-  setLoadingFetch: ({ status }: { status: boolean }) => void;
   deletePost: (uid: string | undefined, postId: number) => void;
   setUsername: (username: string) => void;
   updatePost: (
@@ -144,6 +144,24 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
         console.log(credential);
       });
   },
+  fetchPosts: () => {
+    const { currentUser } = useFirebaseServices.getState();
+    const uid = currentUser?.uid;
+    const postsRef = collection(db, `users/${uid}/posts`);
+
+    const unsubscribe = onSnapshot(postsRef, (snapshot) => {
+      const fetchedPosts = snapshot.docs.map((doc) => doc.data());
+
+      set({ posts: fetchedPosts }); // Update the posts in the state
+    });
+
+    // Unsubscribe from the listener when component unmounts
+    return () => {
+      if (currentUser) {
+        unsubscribe();
+      }
+    };
+  },
   addPost: async (content: string) => {
     const user = useFirebaseServices.getState().currentUser;
     const username = useFirebaseServices.getState().username;
@@ -167,12 +185,6 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   },
   setPosts: ({ posts }: { posts: object }) => {
     set({ posts });
-  },
-  setSuccessFetch: ({ status }: { status: boolean }) => {
-    set({ successFetch: status });
-  },
-  setLoadingFetch: ({ status }: { status: boolean }) => {
-    set({ loadingFetch: status });
   },
   deletePost: async (uid: string | undefined, postId: number) => {
     try {

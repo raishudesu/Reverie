@@ -2,33 +2,12 @@ import AddReverie from "@/components/addReverie";
 import Posts from "@/components/posts";
 import SkeletonLoader from "@/components/skeleton";
 import { Card } from "@/components/ui/card";
-import { db, useFirebaseServices } from "@/stores/useFirebase";
+import { useFirebaseServices } from "@/stores/useFirebase";
 import { useQuery } from "@tanstack/react-query";
-import { collection, onSnapshot } from "firebase/firestore";
-import { useEffect } from "react";
 import Notebook from "../assets/notebook.svg";
 
 const HomePosts = () => {
-  const { setPosts, currentUser, setSuccessFetch, setLoadingFetch, posts } =
-    useFirebaseServices();
-
-  const uid = currentUser?.uid;
-
-  const postsRef = collection(db, `users/${uid}/posts`);
-
-  const fetchPosts = () => {
-    return new Promise((resolve) => {
-      const unsubscribe = onSnapshot(postsRef, (snapshot) => {
-        const fetchedPosts = snapshot.docs.map((doc) => doc.data());
-
-        setPosts({ posts: fetchedPosts }); // Update the posts in the state
-        resolve(fetchedPosts);
-      });
-
-      // Unsubscribe from the listener when component unmounts
-      if (currentUser) return unsubscribe;
-    });
-  };
+  const { fetchPosts } = useFirebaseServices();
 
   const { isLoading, isSuccess } = useQuery({
     queryKey: ["posts"],
@@ -36,10 +15,6 @@ const HomePosts = () => {
     refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    setSuccessFetch({ status: isSuccess });
-    setLoadingFetch({ status: isLoading });
-  }, [isSuccess, setSuccessFetch, isLoading, setLoadingFetch, posts]);
   return (
     <div className=" w-full py-4 max-h-fit flex flex-col gap-6 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
       <img
