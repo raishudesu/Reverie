@@ -29,8 +29,6 @@ import { FirebaseError } from "firebase/app";
 interface IFirebase {
   currentUser: User | null;
   posts: DocumentData;
-  successFetch: boolean;
-  loadingFetch: boolean;
   username: string | undefined;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, username: string) => Promise<void>;
@@ -55,8 +53,6 @@ export const db = getFirestore(app);
 export const useFirebaseServices = create<IFirebase>((set) => ({
   currentUser: null,
   posts: [],
-  successFetch: false,
-  loadingFetch: false,
   username: undefined,
   signIn: async (email: string, password: string) => {
     try {
