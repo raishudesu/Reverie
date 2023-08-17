@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -12,6 +11,17 @@ import { Textarea } from "./ui/textarea";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useState } from "react";
 import { MdModeEdit } from "react-icons/md";
+import { toast } from "./ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+
+const FormSchema = z.object({
+  post: z.string().min(3, {
+    message: "A post must be at least 3 characters.",
+  }),
+});
 
 const UpdatePostDialog = ({
   postId,
@@ -21,9 +31,27 @@ const UpdatePostDialog = ({
   currentContent: string;
 }) => {
   const [open, setOpen] = useState(false);
-  const [updatedPost, setUpdatedPost] = useState(currentContent);
-  const { updatePost, currentUser } = useFirebaseServices();
-  const uid = currentUser?.uid;
+  const { updatePost } = useFirebaseServices();
+
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      post: currentContent,
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    try {
+      updatePost(postId, data.post);
+      toast({
+        title: "Successfully posted!",
+      });
+      setOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -38,28 +66,28 @@ const UpdatePostDialog = ({
             Make changes to your post here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex w-full ">
-          <div className="w-full flex justify-center items-center gap-4">
-            <Textarea
-              id="post"
-              className="col-span-3 w-full scrollbar-thin scrollbar-thumb-gray-400 text-md"
-              placeholder="edit post"
-              rows={6}
-              value={updatedPost}
-              onChange={(e) => setUpdatedPost(e.target.value)}
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button
-            onClick={() => {
-              updatePost(uid, postId, updatedPost);
-              setOpen(false);
-            }}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full flex flex-col gap-2"
           >
-            Save changes
-          </Button>
-        </DialogFooter>
+            <FormField
+              control={form.control}
+              name="post"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Textarea placeholder="Edit post" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="mt-4 md:self-end">
+              Save changes
+            </Button>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

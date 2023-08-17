@@ -42,11 +42,7 @@ interface IFirebase {
   setPosts: ({ posts }: { posts: object }) => void;
   deletePost: (uid: string | undefined, postId: number) => void;
   setUsername: (username: string) => void;
-  updatePost: (
-    uid: string | undefined,
-    postId: number,
-    updatedPost: string
-  ) => void;
+  updatePost: (postId: number, updatedPost: string) => void;
   updateUsername: (uid: string | undefined, newUsername: string) => void;
   updateUserEmail: (email: string) => void;
   updateUserPwd: (password: string) => void;
@@ -203,11 +199,8 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   setUsername: (username: string) => {
     set({ username: username });
   },
-  updatePost: async (
-    uid: string | undefined,
-    postId: number,
-    updatedPost: string
-  ) => {
+  updatePost: async (postId: number, updatedPost: string) => {
+    const uid = useFirebaseServices.getState().currentUser?.uid;
     const postRef = doc(db, `users/${uid}/posts/${postId}`);
     try {
       await updateDoc(postRef, {

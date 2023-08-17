@@ -44,7 +44,10 @@ const AddReverie = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="w-full flex flex-col gap-4"
+      >
         <FormField
           control={form.control}
           name="post"
@@ -67,7 +70,7 @@ const AddReverie = () => {
             </FormItem>
           )}
         />
-        <Button className="w-full lg:w-[100px] px-6" type="submit">
+        <Button className="w-full lg:w-[100px] px-6 self-end" type="submit">
           Post
         </Button>
       </form>

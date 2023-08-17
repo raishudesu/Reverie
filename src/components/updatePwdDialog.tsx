@@ -89,7 +89,7 @@ const UpdatePwdDialog = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="password" type="password" {...field} />
+                    <Input placeholder="Password" type="password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,7 +103,7 @@ const UpdatePwdDialog = () => {
                   <FormLabel>Confirm password</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="re-enter your password"
+                      placeholder="Re-enter your password"
                       type="password"
                       {...field}
                     />
