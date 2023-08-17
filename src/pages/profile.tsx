@@ -9,8 +9,8 @@ const Profile = () => {
   return (
     <div className="w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
       <div>
-        <Card className="h-32 bg-gradient-to-r rounded-b-none from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]"></Card>
-        <Card className="rounded-t-none">
+        <Card className="border-b-0 h-32 bg-gradient-to-r rounded-b-none from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]"></Card>
+        <Card className="border-t-0 rounded-t-none">
           <CardHeader className="flex flex-col justify-center items-start ">
             <div className="rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
               <AiOutlineUser size={40} />

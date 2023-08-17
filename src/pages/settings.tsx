@@ -12,7 +12,8 @@ const Settings = () => {
   return (
     <div className="w-full h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
       <div className="h-full flex flex-col justify-between">
-        <Card className="rounded-t-none h-full">
+        <Card className="border-b-0 h-32 bg-gradient-to-r rounded-b-none from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]"></Card>
+        <Card className="border-t-0 rounded-t-none h-full">
           <CardHeader className="flex flex-row justify-start items-center gap-2 ">
             <div className="rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
               <AiOutlineUser size={20} />
