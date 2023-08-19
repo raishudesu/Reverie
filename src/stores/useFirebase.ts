@@ -23,9 +23,13 @@ import {
   serverTimestamp,
   updateDoc,
   onSnapshot,
+  getDoc,
 } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { toast } from "@/components/ui/use-toast";
 import { FirebaseError } from "firebase/app";
+import { v4 } from "uuid";
+
 interface IFirebase {
   currentUser: User | null;
   posts: DocumentData;
@@ -45,9 +49,13 @@ interface IFirebase {
   updateUserEmail: (email: string) => void;
   updateUserPwd: (password: string) => void;
   deleteUserAcc: () => void;
+  uploadProfilePic: (imageUpload: File) => void;
+  profilePicUrl: string | undefined;
+  getProfilePic: (imageUrl: string) => void;
 }
 
 const auth = getAuth(app);
+const storage = getStorage();
 export const db = getFirestore(app);
 
 export const useFirebaseServices = create<IFirebase>((set) => ({
@@ -101,41 +109,55 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
       console.log(error);
     }
   },
-  signOut: async () => await signOut(auth),
+  signOut: async () => {
+    await signOut(auth);
+    set({ profilePicUrl: undefined });
+  },
   initializeAuthStateListener: () => {
     onAuthStateChanged(auth, (user) => {
       set({ currentUser: user });
     });
   },
-  signInWithGoogle: () => {
+  signInWithGoogle: async () => {
     const provider = new GoogleAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        const user = result.user;
-        const uid = user.uid;
-        setDoc(doc(db, "users", uid), {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const uid = user.uid;
+
+      const userDocRef = doc(db, "users", uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      // Check if the document exists
+      if (userDocSnap.exists()) {
+        toast({
+          title: `Welcome back!`,
+        });
+      } else {
+        // Add new data if the document does not exist
+        await setDoc(userDocRef, {
           username: user.displayName,
           uid: uid,
           email: user.email,
           createdAt: serverTimestamp(),
           providerId: user.providerData[0].providerId,
-        })
-          .then(() => {
-            toast({
-              title: `Signed in successfully`,
-            });
-          })
-          .catch((error) => {
-            toast({
-              title: `Sign in failed. Error: ${error}`,
-            });
-          });
-      })
-      .catch((error) => {
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        console.log(credential);
+        });
+
+        toast({
+          title: `Signed in successfully`,
+        });
+      }
+    } catch (error) {
+      const credential = GoogleAuthProvider.credentialFromError(
+        error as FirebaseError
+      );
+      console.log(credential);
+      toast({
+        title: `Sign in failed. Error: ${error}`,
       });
+    }
   },
+
   fetchPosts: () => {
     const { currentUser } = useFirebaseServices.getState();
     const uid = currentUser?.uid;
@@ -268,6 +290,43 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
         title: `Account deletion failed`,
       });
       console.log(error);
+    }
+  },
+  uploadProfilePic: async (imageUpload: File) => {
+    const uid = useFirebaseServices.getState().currentUser?.uid;
+    const userRef = doc(db, `users/${uid}`);
+
+    if (imageUpload === null) return null;
+
+    const imageRefUrl = `userProfPics/${imageUpload.name + v4()}`;
+    const imageRef = ref(storage, imageRefUrl);
+
+    try {
+      await uploadBytes(imageRef, imageUpload);
+      await updateDoc(userRef, {
+        profPicUrl: imageRefUrl,
+      });
+      toast({
+        title: `Profile picture updated`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  profilePicUrl: undefined,
+  getProfilePic: async (imageUrl: string | undefined) => {
+    if (imageUrl) {
+      const imageRef = ref(storage, imageUrl);
+
+      try {
+        const url = await getDownloadURL(imageRef);
+        set({ profilePicUrl: url });
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // Clear the profile picture if imageUrl is undefined
+      set({ profilePicUrl: undefined });
     }
   },
 }));

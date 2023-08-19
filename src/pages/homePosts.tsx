@@ -28,7 +28,7 @@ const HomePosts = () => {
         <AddReverie />
       </Card>
       {isLoading && (
-        <div className="flex flex-col gap-9">
+        <div className="flex flex-col gap-9 mt-6">
           {Array.from({ length: 16 }).map((_, index) => (
             <div key={index}>
               <SkeletonLoader />

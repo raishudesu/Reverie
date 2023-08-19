@@ -8,10 +8,10 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Timestamp } from "firebase/firestore";
-import { AiOutlineUser } from "react-icons/ai";
 import UpdatePostDialog from "./updatePostDialog";
 import DeletePostDialog from "./deletePostDialog";
 import moment from "moment";
+import ProfilePic from "./profilePic";
 
 const Posts = () => {
   const { posts } = useFirebaseServices();
@@ -46,8 +46,8 @@ const Posts = () => {
                   <CardHeader className="w-full">
                     <CardTitle className="flex justify-between items-center">
                       Entry #{index + 1}
-                      <div className="rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
-                        <AiOutlineUser size={20} />
+                      <div className="rounded-full w-[50px] h-[50px] overflow-hidden">
+                        <ProfilePic />
                       </div>
                     </CardTitle>
                   </CardHeader>

@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { AiOutlineUser } from "react-icons/ai";
 import { LiaCopyright } from "react-icons/lia";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import EditEmailDialog from "@/components/editEmailDialog";
 import UpdatePwdDialog from "@/components/updatePwdDialog";
 import DeleteAccDialog from "@/components/deleteAccDialog";
+import ProfilePic from "@/components/profilePic";
 
 const Settings = () => {
   const { currentUser, username } = useFirebaseServices();
@@ -15,8 +15,8 @@ const Settings = () => {
         <Card className="border-b-0 h-32 bg-gradient-to-r rounded-b-none from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]"></Card>
         <Card className="border-t-0 rounded-t-none h-full">
           <CardHeader className="flex flex-row justify-start items-center gap-2 ">
-            <div className="rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
-              <AiOutlineUser size={20} />
+            <div className="rounded-full w-[50px] h-[50px] overflow-hidden">
+              <ProfilePic />
             </div>
             <CardTitle>Account settings</CardTitle>
           </CardHeader>

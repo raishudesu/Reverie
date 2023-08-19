@@ -8,19 +8,25 @@ import { useQuery } from "@tanstack/react-query";
 import { BiLoaderAlt } from "react-icons/bi";
 import { CgNotes } from "react-icons/cg";
 import SignOutDialog from "./signOutDialog";
+import ProfilePic from "./profilePic";
 
 const HomeSidePanel = () => {
   const navigate = useNavigate();
-  const { currentUser, setUsername, username } = useFirebaseServices();
+  const { currentUser, setUsername, username, getProfilePic } =
+    useFirebaseServices();
   const uid = currentUser?.uid;
   const usernameRef = doc(db, `users/${uid}`);
-  const getUsername = () => {
+  const getUserDetails = () => {
     return new Promise((resolve, reject) => {
       const unsubscribe = onSnapshot(usernameRef, (doc) => {
         if (doc.exists()) {
-          const usernameData = doc.data();
-          setUsername(usernameData.username);
-          resolve(usernameData);
+          const data = doc.data();
+          setUsername(data.username);
+          if (data.profPicUrl) {
+            getProfilePic(data.profPicUrl);
+          }
+
+          resolve(data);
         } else {
           // Handle the case where the document doesn't exist
           reject(new Error("No such document!"));
@@ -33,7 +39,7 @@ const HomeSidePanel = () => {
   };
   const { isLoading } = useQuery({
     queryKey: ["userDetails"],
-    queryFn: getUsername,
+    queryFn: getUserDetails,
     refetchOnWindowFocus: false,
   });
 
@@ -43,9 +49,10 @@ const HomeSidePanel = () => {
         <div className="flex flex-col justify-between items-start gap-4">
           <div className="flex flex-col justify-start items-start gap-6">
             <div className="flex flex-col justify-center items-start gap-2">
-              <div className="rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
-                <AiOutlineUser size={20} />
+              <div className="rounded-full w-[50px] h-[50px] overflow-hidden">
+                <ProfilePic />
               </div>
+
               {isLoading ? (
                 <BiLoaderAlt className="animate-spin" size={20} />
               ) : null}

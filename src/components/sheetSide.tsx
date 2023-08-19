@@ -17,6 +17,7 @@ import { CgNotes } from "react-icons/cg";
 import { useState } from "react";
 import { LucideBookKey } from "lucide-react";
 import SignOutDialog from "./signOutDialog";
+import ProfilePic from "./profilePic";
 
 const SHEET_SIDES = ["left"] as const;
 
@@ -26,6 +27,7 @@ export function SheetSide() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { currentUser, username } = useFirebaseServices();
+
   return (
     <div className="md:hidden ">
       {SHEET_SIDES.map((side) => (
@@ -45,8 +47,8 @@ export function SheetSide() {
               <div className="flex flex-col justify-between items-start gap-4">
                 <div className="flex flex-col justify-start items-start gap-6">
                   <div className="flex flex-col justify-center items-start gap-2">
-                    <div className="rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
-                      <AiOutlineUser size={20} />
+                    <div className="rounded-full w-[50px] h-[50px] overflow-hidden">
+                      <ProfilePic />
                     </div>
                     <h1 className="text-md font-bold">{username}</h1>
                   </div>

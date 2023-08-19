@@ -15,7 +15,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { useFirebaseServices } from "@/stores/useFirebase";
-import { AiOutlineUser } from "react-icons/ai";
 
 const FormSchema = z.object({
   post: z.string().min(3, {
@@ -54,9 +53,6 @@ const AddReverie = () => {
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
               <FormLabel className="text-2xl flex justify-center items-center gap-2">
-                <div className="md:hidden rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
-                  <AiOutlineUser size={20} />
-                </div>
                 Post
               </FormLabel>
               <FormControl>

@@ -1,7 +1,8 @@
+import EditProfilePicture from "@/components/editProfilePicture";
 import EditUsernameDialog from "@/components/editUsernameDialog";
+import ProfilePic from "@/components/profilePic";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useFirebaseServices } from "@/stores/useFirebase";
-import { AiOutlineUser } from "react-icons/ai";
 
 const Profile = () => {
   const { username, currentUser } = useFirebaseServices();
@@ -12,17 +13,20 @@ const Profile = () => {
         <Card className="border-b-0 h-32 bg-gradient-to-r rounded-b-none from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]"></Card>
         <Card className="border-t-0 rounded-t-none">
           <CardHeader className="flex flex-col justify-center items-start ">
-            <div className="rounded-full p-4 bg-gradient-to-r from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]">
-              <AiOutlineUser size={40} />
+            <div className="w-[150px] h-[150px] ">
+              <ProfilePic />
             </div>
+
             <div className="w-full flex justify-between items-center">
-              <div className="flex flex-col">
-                <p className="text-xl font-bold">{username}</p>
+              <div className="flex flex-col gap-1">
+                <p className="text-xl font-bold flex items-center gap-2">
+                  {username} <EditUsernameDialog />
+                </p>
                 <p className="text-sm text-muted-foreground">
                   {currentUser?.email}
                 </p>
               </div>
-              <EditUsernameDialog />
+              <EditProfilePicture />
             </div>
           </CardHeader>
           <CardContent className="text-muted-foreground">
