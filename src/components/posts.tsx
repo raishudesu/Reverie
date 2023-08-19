@@ -18,7 +18,7 @@ const Posts = () => {
 
   return (
     <>
-      <div className="flex flex-col-reverse items-center gap-6">
+      <div className="flex flex-col-reverse items-center gap-2">
         {posts.length !== 0 ? (
           posts.map(
             (

@@ -24,7 +24,7 @@ const HomePosts = () => {
           className="w-[50%] sm:max-w-[30%] md:max-w-[40%] lg:max-w-[30%] xl:max-w-[20%] self-center"
         />
       </Card>
-      <Card className="border-t-0 w-full p-4 shadow-md shadow-gray-200 dark:shadow-gray-700 rounded-t-none">
+      <Card className="border-t-0 w-full p-4 rounded-t-none">
         <AddReverie />
       </Card>
       {isLoading && (
@@ -37,7 +37,7 @@ const HomePosts = () => {
         </div>
       )}
       {isSuccess && (
-        <div className="w-full mt-6">
+        <div className="w-full mt-2">
           <Posts />
         </div>
       )}
