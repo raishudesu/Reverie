@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useFirebaseServices } from "@/stores/useFirebase";
-import Header from "@/components/header";
 import { BiLoaderAlt } from "react-icons/bi";
 import Dreamer from "../assets/dreamer.svg";
 
@@ -33,7 +32,6 @@ const SignIn = () => {
         <BiLoaderAlt className="animate-spin" size={30} />
       ) : (
         <>
-          <Header />
           <div className="flex justify-center items-center">
             <div className="max-w-fit flex justify-evenly items-center gap-6">
               <img
