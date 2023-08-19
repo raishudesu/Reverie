@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
 
 const FormSchema = z
   .object({
@@ -36,6 +38,7 @@ const FormSchema = z
 
 const SignUpForm = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const { signUp } = useFirebaseServices();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -51,8 +54,13 @@ const SignUpForm = () => {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       await signUp(data.email, data.password, data.username);
+      setIsLoading(true);
+
+      setTimeout(() => {
+        setIsLoading(false);
+        navigate("/home");
+      }, 3000);
       form.reset();
-      navigate("/home");
     } catch (error) {
       console.log(error);
     }
@@ -73,7 +81,11 @@ const SignUpForm = () => {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Username" {...field} />
+                  <Input
+                    placeholder="Username"
+                    {...field}
+                    disabled={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -86,7 +98,11 @@ const SignUpForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your@email.com" {...field} />
+                  <Input
+                    placeholder="Your@email.com"
+                    {...field}
+                    disabled={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -99,7 +115,12 @@ const SignUpForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Password" type="password" {...field} />
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    {...field}
+                    disabled={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -116,13 +137,15 @@ const SignUpForm = () => {
                     placeholder="Re-enter your password"
                     type="password"
                     {...field}
+                    disabled={isLoading}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button className="w-full mt-2" type="submit">
+          <Button className="w-full mt-2" type="submit" disabled={isLoading}>
+            {isLoading && <BiLoaderAlt className="mr-2 h-4 w-4 animate-spin" />}
             Sign up
           </Button>
         </form>

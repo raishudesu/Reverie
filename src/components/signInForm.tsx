@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import { FcGoogle } from "react-icons/fc";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useNavigate } from "react-router-dom";
+import { BiLoaderAlt } from "react-icons/bi";
+import { useState } from "react";
 
 const FormSchema = z.object({
   email: z.string().email({
@@ -28,6 +30,7 @@ const FormSchema = z.object({
 
 const SignInForm = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const { signIn, signInWithGoogle } = useFirebaseServices();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -41,8 +44,14 @@ const SignInForm = () => {
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       await signIn(data.email, data.password);
+
+      setIsLoading(true);
+
+      setTimeout(() => {
+        setIsLoading(false);
+        navigate("/home");
+      }, 3000);
       form.reset();
-      navigate("/home");
     } catch (error) {
       console.log(error);
     }
@@ -63,7 +72,11 @@ const SignInForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your@email.com" {...field} />
+                  <Input
+                    placeholder="Your@email.com"
+                    {...field}
+                    disabled={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -76,13 +89,19 @@ const SignInForm = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Password" type="password" {...field} />
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    {...field}
+                    disabled={isLoading}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button className="w-full mt-2" type="submit">
+          <Button className="w-full mt-2" type="submit" disabled={isLoading}>
+            {isLoading && <BiLoaderAlt className="mr-2 h-4 w-4 animate-spin" />}
             Sign in
           </Button>
         </form>
@@ -99,7 +118,11 @@ const SignInForm = () => {
           <div className="text-sm">
             Doesn't have an account?{" "}
             <span>
-              <Button variant={"link"} onClick={() => navigate("/signup")}>
+              <Button
+                variant={"link"}
+                onClick={() => navigate("/signup")}
+                disabled={isLoading}
+              >
                 Sign up
               </Button>
             </span>
