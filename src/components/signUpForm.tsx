@@ -60,9 +60,10 @@ const SignUpForm = () => {
         setIsLoading(false);
         navigate("/home");
       }, 3000);
-      form.reset();
     } catch (error) {
       console.log(error);
+    } finally {
+      form.reset();
     }
   };
 

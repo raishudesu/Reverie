@@ -8,7 +8,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { AiOutlineBell, AiOutlineMenu, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineBell, AiOutlineUser } from "react-icons/ai";
+import { HiMenuAlt1 } from "react-icons/hi";
 import { ModeToggle } from "./mode-toggle";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { FiSettings } from "react-icons/fi";
@@ -33,8 +34,8 @@ export function SheetSide() {
       {SHEET_SIDES.map((side) => (
         <Sheet key={side} open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
-            <Button variant={"outline"}>
-              <AiOutlineMenu size={20} />
+            <Button variant={"ghost"}>
+              <HiMenuAlt1 size={25} />
             </Button>
           </SheetTrigger>
           <SheetContent side={side}>

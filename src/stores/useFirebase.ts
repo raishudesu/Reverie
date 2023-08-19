@@ -131,7 +131,7 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
       // Check if the document exists
       if (userDocSnap.exists()) {
         toast({
-          title: `Welcome back!`,
+          title: `Signed in successfully`,
         });
       } else {
         // Add new data if the document does not exist

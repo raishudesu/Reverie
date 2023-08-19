@@ -43,17 +43,14 @@ const SignInForm = () => {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
-      await signIn(data.email, data.password);
-
       setIsLoading(true);
-
-      setTimeout(() => {
-        setIsLoading(false);
-        navigate("/home");
-      }, 3000);
-      form.reset();
+      await signIn(data.email, data.password);
+      navigate("/home");
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
+      form.reset();
     }
   };
 
