@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import { AiOutlineBell, AiOutlineUser } from "react-icons/ai";
 import { HiMenuAlt1 } from "react-icons/hi";
-import { ModeToggle } from "./mode-toggle";
+import ModeToggle from "./mode-toggle";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { FiSettings } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,7 @@ const SHEET_SIDES = ["left"] as const;
 
 type SheetSide = (typeof SHEET_SIDES)[number];
 
-export function SheetSide() {
+const SheetSide = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const { currentUser, username } = useFirebaseServices();
@@ -96,7 +96,6 @@ export function SheetSide() {
 
                   <ModeToggle />
                 </div>
-
                 {currentUser ? (
                   <div className="flex justify-start items-start w-full">
                     <SignOutDialog />
@@ -109,4 +108,6 @@ export function SheetSide() {
       ))}
     </div>
   );
-}
+};
+
+export default SheetSide;

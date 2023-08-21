@@ -1,5 +1,5 @@
-import { ModeToggle } from "./mode-toggle";
-import { SheetSide } from "./sheetSide";
+import ModeToggle from "./mode-toggle";
+import SheetSide from "./sheetSide";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { LucideBookKey } from "lucide-react";
 const Header = () => {

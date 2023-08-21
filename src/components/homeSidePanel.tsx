@@ -1,5 +1,5 @@
 import { AiOutlineBell, AiOutlineUser } from "react-icons/ai";
-import { ModeToggle } from "./mode-toggle";
+import ModeToggle from "./mode-toggle";
 import { db, useFirebaseServices } from "@/stores/useFirebase";
 import { useNavigate } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
