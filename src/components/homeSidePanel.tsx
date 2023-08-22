@@ -16,6 +16,7 @@ const HomeSidePanel = () => {
     useFirebaseServices();
   const uid = currentUser?.uid;
   const usernameRef = doc(db, `users/${uid}`);
+
   const getUserDetails = () => {
     return new Promise((resolve, reject) => {
       const unsubscribe = onSnapshot(usernameRef, (doc) => {
@@ -37,6 +38,7 @@ const HomeSidePanel = () => {
       if (currentUser) return unsubscribe;
     });
   };
+
   const { isLoading } = useQuery({
     queryKey: ["userDetails"],
     queryFn: getUserDetails,
