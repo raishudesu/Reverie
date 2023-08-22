@@ -16,12 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
-
-const FormSchema = z.object({
-  post: z.string().min(3, {
-    message: "A post must be at least 3 characters.",
-  }),
-});
+import { EditPostSchema } from "@/lib/types";
 
 const UpdatePostDialog = ({
   postId,
@@ -33,14 +28,14 @@ const UpdatePostDialog = ({
   const [open, setOpen] = useState(false);
   const { updatePost } = useFirebaseServices();
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof EditPostSchema>>({
+    resolver: zodResolver(EditPostSchema),
     defaultValues: {
       post: currentContent,
     },
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = (data: z.infer<typeof EditPostSchema>) => {
     try {
       updatePost(postId, data.post);
       toast({

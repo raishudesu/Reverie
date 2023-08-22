@@ -22,25 +22,21 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { EditUsernameSchema } from "@/lib/types";
 
 const EditUsernameDialog = () => {
   const [open, setOpen] = useState(false);
   const { updateUsername, currentUser, username } = useFirebaseServices();
   const uid = currentUser?.uid;
 
-  const FormSchema = z.object({
-    username: z.string().min(3, {
-      message: "Username must be more than 3 characters.",
-    }),
-  });
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof EditUsernameSchema>>({
+    resolver: zodResolver(EditUsernameSchema),
     defaultValues: {
       username: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = (data: z.infer<typeof EditUsernameSchema>) => {
     try {
       updateUsername(uid, data.username);
       setOpen(false);

@@ -22,23 +22,21 @@ import {
 } from "./ui/form";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useState } from "react";
-
-const FormSchema = z.object({
-  email: z.string().email({
-    message: "Enter a valid email.",
-  }),
-});
+import { EditEmailSchema } from "@/lib/types";
 
 const EditEmailDialog = () => {
   const [open, setOpen] = useState(false);
+
   const { updateUserEmail, currentUser } = useFirebaseServices();
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+
+  const form = useForm<z.infer<typeof EditEmailSchema>>({
+    resolver: zodResolver(EditEmailSchema),
     defaultValues: {
       email: "", // Set your default email value here
     },
   });
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+
+  const onSubmit = (data: z.infer<typeof EditEmailSchema>) => {
     try {
       updateUserEmail(data.email);
       setOpen(false);
@@ -47,7 +45,9 @@ const EditEmailDialog = () => {
       console.log(error);
     }
   };
+
   const provider = currentUser?.providerData[0].providerId;
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>

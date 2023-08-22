@@ -17,7 +17,9 @@ import { useNavigate } from "react-router-dom";
 
 const SignOutDialog = () => {
   const navigate = useNavigate();
+
   const { signOut } = useFirebaseServices();
+
   const userSignOut = () => {
     try {
       signOut();
@@ -29,6 +31,7 @@ const SignOutDialog = () => {
       console.log(error);
     }
   };
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>

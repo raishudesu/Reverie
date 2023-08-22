@@ -17,32 +17,15 @@ import { useFirebaseServices } from "@/stores/useFirebase";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-
-const FormSchema = z
-  .object({
-    username: z.string().min(3, {
-      message: "Username must be at least 3 characters.",
-    }),
-    email: z.string().email({
-      message: "Enter a valid email.",
-    }),
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-    confirmPassword: z.string().min(1, "Confirm your password"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Password do not match",
-  });
+import { SignUpSchema } from "@/lib/types";
 
 const SignUpForm = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { signUp } = useFirebaseServices();
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
       username: "",
       email: "", // Set your default email value here
@@ -51,7 +34,7 @@ const SignUpForm = () => {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof SignUpSchema>) => {
     try {
       await signUp(data.email, data.password, data.username);
       setIsLoading(true);

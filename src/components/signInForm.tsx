@@ -18,30 +18,22 @@ import { useFirebaseServices } from "@/stores/useFirebase";
 import { useNavigate } from "react-router-dom";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useState } from "react";
-
-const FormSchema = z.object({
-  email: z.string().email({
-    message: "Enter a valid email.",
-  }),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
-});
+import { SignInSchema } from "@/lib/types";
 
 const SignInForm = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signInWithGoogle } = useFirebaseServices();
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof SignInSchema>>({
+    resolver: zodResolver(SignInSchema),
     defaultValues: {
       email: "", // Set your default email value here
       password: "", // Set your default password value here
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
     try {
       setIsLoading(true);
       await signIn(data.email, data.password);

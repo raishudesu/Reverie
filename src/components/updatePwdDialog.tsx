@@ -22,32 +22,21 @@ import {
 } from "./ui/form";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useState } from "react";
-
-const FormSchema = z
-  .object({
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-    confirmPassword: z.string().min(1, "Confirm your password"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Password do not match",
-  });
+import { UpdatePwdSchema } from "@/lib/types";
 
 const UpdatePwdDialog = () => {
   const [open, setOpen] = useState(false);
   const { updateUserPwd, currentUser } = useFirebaseServices();
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof UpdatePwdSchema>>({
+    resolver: zodResolver(UpdatePwdSchema),
     defaultValues: {
       password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = (data: z.infer<typeof UpdatePwdSchema>) => {
     try {
       updateUserPwd(data.password);
       setOpen(false);

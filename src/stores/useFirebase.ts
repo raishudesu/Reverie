@@ -14,7 +14,6 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import {
-  DocumentData,
   collection,
   doc,
   getFirestore,
@@ -29,30 +28,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { toast } from "@/components/ui/use-toast";
 import { FirebaseError } from "firebase/app";
 import { v4 } from "uuid";
-
-interface IFirebase {
-  currentUser: User | null;
-  posts: DocumentData;
-  username: string | undefined;
-  signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, username: string) => Promise<void>;
-  signOut: () => void;
-  signInWithGoogle: () => void;
-  initializeAuthStateListener: () => void;
-  fetchPosts: () => void;
-  addPost: (content: string) => void;
-  setPosts: ({ posts }: { posts: object }) => void;
-  deletePost: (uid: string | undefined, postId: number) => void;
-  setUsername: (username: string) => void;
-  updatePost: (postId: number, updatedPost: string) => void;
-  updateUsername: (uid: string | undefined, newUsername: string) => void;
-  updateUserEmail: (email: string) => void;
-  updateUserPwd: (password: string) => void;
-  deleteUserAcc: () => void;
-  uploadProfilePic: (imageUpload: File) => void;
-  profilePicUrl: string | undefined;
-  getProfilePic: (imageUrl: string) => void;
-}
+import { IFirebase } from "@/lib/types";
 
 const auth = getAuth(app);
 const storage = getStorage();
