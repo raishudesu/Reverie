@@ -4,10 +4,11 @@ A web-based diary application that's accessible from both desktop and mobile bro
 
 ## Built with:
 
-- Vite
-- React Typescript
-- Tailwind
-- Firebase
+- [Vite](https://vitejs.dev)
+- [React](https://react.dev)
+- [Typescript](https://www.typescriptlang.org/docs/)
+- [Tailwind](https://tailwindcss.com)
+- [Firebase](https://firebase.google.com)
 
 ## Libraries used:
 
