@@ -10,20 +10,16 @@ const SignIn = () => {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  // to refrain the sign in page on rendering if user exists
   useEffect(() => {
-    // Simulate loading for 2 seconds
-    const loadingTimeout = setTimeout(() => {
-      setIsLoading(false);
-
-      if (currentUser) {
-        navigate("/home");
-      }
-    }, 1000);
-
-    // Clean up the timeout when the component unmounts
-    return () => {
-      clearTimeout(loadingTimeout);
+    const checkUser = () => {
+      currentUser
+        ? navigate("/home")
+        : setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
     };
+    checkUser();
   }, [currentUser, navigate]);
 
   return (
