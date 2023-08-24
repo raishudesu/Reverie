@@ -1,17 +1,17 @@
 import AddReverie from "@/components/addReverie";
-import Posts from "@/components/posts";
 import SkeletonLoader from "@/components/skeleton";
 import { Card } from "@/components/ui/card";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useQuery } from "@tanstack/react-query";
 import Notebook from "../assets/notebook.svg";
+import PublicPosts from "@/components/publicPosts";
 
 const HomePosts = () => {
-  const { fetchPosts } = useFirebaseServices();
+  const { getPublicPosts } = useFirebaseServices();
 
   const { isLoading, isSuccess } = useQuery({
     queryKey: ["posts"],
-    queryFn: fetchPosts,
+    queryFn: getPublicPosts,
     refetchOnWindowFocus: false,
   });
 
@@ -38,7 +38,7 @@ const HomePosts = () => {
       )}
       {isSuccess && (
         <div className="w-full mt-2">
-          <Posts />
+          <PublicPosts />
         </div>
       )}
     </div>

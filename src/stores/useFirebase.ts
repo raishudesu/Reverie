@@ -23,6 +23,8 @@ import {
   updateDoc,
   onSnapshot,
   getDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { toast } from "@/components/ui/use-toast";
@@ -37,7 +39,9 @@ export const db = getFirestore(app);
 export const useFirebaseServices = create<IFirebase>((set) => ({
   currentUser: null,
   posts: [],
+  pblcPosts: [],
   username: undefined,
+  profilePicUrl: undefined,
   signIn: async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -152,14 +156,21 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
       }
     };
   },
-  addPost: async (content: string) => {
+  addPost: async (display: string, content: string) => {
     const user = useFirebaseServices.getState().currentUser;
     const username = useFirebaseServices.getState().username;
+    const profPicUrl = useFirebaseServices.getState().profilePicUrl;
+
     try {
       const uid = user?.uid;
       const postId = Date.now().toString();
-      const colRef = collection(db, "users");
-      const docRef = doc(colRef, uid, "posts", postId);
+
+      const userPostsRef = collection(db, "users");
+      const postsRef = collection(db, "posts");
+
+      const postsDocRef = doc(postsRef, postId);
+      const docRef = doc(userPostsRef, uid, "posts", postId);
+
       const postData = {
         created_at: new Date(),
         content: content,
@@ -167,11 +178,34 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
         authorUsername: username,
         authorId: uid,
         authorEmail: user?.email,
+        profPicUrl: profPicUrl,
+        display: display,
       };
+
       await setDoc(docRef, postData);
+      await setDoc(postsDocRef, postData);
     } catch (error) {
       console.log(error);
     }
+  },
+  getPublicPosts: () => {
+    const { currentUser } = useFirebaseServices.getState();
+    const postsRef = collection(db, "posts");
+
+    const q = query(postsRef, where("display", "==", "public"));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const fetchedPosts = snapshot.docs.map((doc) => doc.data());
+
+      set({ pblcPosts: fetchedPosts }); // Update the posts in the state
+    });
+
+    // Unsubscribe from the listener when component unmounts
+    return () => {
+      if (currentUser) {
+        unsubscribe();
+      }
+    };
   },
   setPosts: ({ posts }: { posts: object }) => {
     set({ posts });
@@ -289,7 +323,6 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
       console.log(error);
     }
   },
-  profilePicUrl: undefined,
   getProfilePic: async (imageUrl: string | undefined) => {
     if (imageUrl) {
       const imageRef = ref(storage, imageUrl);

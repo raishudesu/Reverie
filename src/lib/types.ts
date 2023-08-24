@@ -5,6 +5,7 @@ import { DocumentData } from "firebase/firestore";
 export interface IFirebase {
   currentUser: User | null;
   posts: DocumentData;
+  pblcPosts: DocumentData;
   username: string | undefined;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, username: string) => Promise<void>;
@@ -12,7 +13,8 @@ export interface IFirebase {
   signInWithGoogle: () => void;
   initializeAuthStateListener: () => void;
   fetchPosts: () => void;
-  addPost: (content: string) => void;
+  addPost: (display: string, content: string) => void;
+  getPublicPosts: () => void;
   setPosts: ({ posts }: { posts: object }) => void;
   deletePost: (uid: string | undefined, postId: number) => void;
   setUsername: (username: string) => void;
@@ -52,6 +54,13 @@ export const SignUpSchema = z
     path: ["confirmPassword"],
     message: "Password do not match",
   });
+
+export const AddPostSchema = z.object({
+  display: z.string(),
+  post: z.string().min(3, {
+    message: "A post must be at least 3 characters.",
+  }),
+});
 
 export const EditEmailSchema = z.object({
   email: z.string().email({

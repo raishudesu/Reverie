@@ -15,23 +15,20 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { useFirebaseServices } from "@/stores/useFirebase";
-
-const FormSchema = z.object({
-  post: z.string().min(3, {
-    message: "A post must be at least 3 characters.",
-  }),
-});
+import { AddPostSchema } from "@/lib/types";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
+import { AiOutlineGlobal } from "react-icons/ai";
 
 const AddReverie = () => {
   const { addPost } = useFirebaseServices();
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof AddPostSchema>>({
+    resolver: zodResolver(AddPostSchema),
   });
 
-  const onSubmit = (data: z.infer<typeof FormSchema>) => {
+  const onSubmit = (data: z.infer<typeof AddPostSchema>) => {
     try {
-      addPost(data.post);
+      addPost(data.display, data.post);
       toast({
         title: "Successfully posted!",
       });
@@ -47,14 +44,34 @@ const AddReverie = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-4"
       >
+        <FormLabel className="text-2xl flex justify-start items-center gap-2">
+          Post
+        </FormLabel>
+        <FormField
+          control={form.control}
+          name="display"
+          render={({ field }) => (
+            <FormItem className="self-start">
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl className="self-start">
+                  <SelectTrigger>
+                    <AiOutlineGlobal size={20} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="public">Public</SelectItem>
+                  <SelectItem value="private">Private</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="post"
           render={({ field }) => (
             <FormItem className="flex flex-col items-start">
-              <FormLabel className="text-2xl flex justify-center items-center gap-2">
-                Post
-              </FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="What's up?"

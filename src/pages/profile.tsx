@@ -1,11 +1,20 @@
 import EditProfilePicture from "@/components/editProfilePicture";
 import EditUsernameDialog from "@/components/editUsernameDialog";
+import Posts from "@/components/posts";
 import ProfilePic from "@/components/profilePic";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import SkeletonLoader from "@/components/skeleton";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { useFirebaseServices } from "@/stores/useFirebase";
+import { useQuery } from "@tanstack/react-query";
 
 const Profile = () => {
-  const { username, currentUser } = useFirebaseServices();
+  const { username, currentUser, fetchPosts } = useFirebaseServices();
+
+  const { isLoading, isSuccess } = useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchPosts,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <div className="w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
@@ -16,7 +25,6 @@ const Profile = () => {
             <div className="w-[150px] h-[150px] ">
               <ProfilePic />
             </div>
-
             <div className="w-full flex justify-between items-center flex-wrap gap-4">
               <div className="flex flex-col gap-1">
                 <p className="text-xl font-bold flex items-center gap-2">
@@ -30,14 +38,25 @@ const Profile = () => {
             </div>
           </CardHeader>
         </Card>
-        <Card>
+        <Card className="border-none">
           <CardHeader className="flex flex-col justify-center items-start ">
-            <CardTitle>This serves as your profile in Reverie.</CardTitle>
+            <CardTitle>Your posts</CardTitle>
           </CardHeader>
-          <CardContent className="text-muted-foreground flex flex-col gap-4">
-            More features coming soon.
-          </CardContent>
         </Card>
+        {isLoading && (
+          <div className="flex flex-col gap-9 mt-6">
+            {Array.from({ length: 16 }).map((_, index) => (
+              <div key={index}>
+                <SkeletonLoader />
+              </div>
+            ))}
+          </div>
+        )}
+        {isSuccess && (
+          <div className="w-full mt-2">
+            <Posts />
+          </div>
+        )}
       </div>
     </div>
   );

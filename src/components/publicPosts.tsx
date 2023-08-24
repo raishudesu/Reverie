@@ -13,13 +13,13 @@ import DeletePostDialog from "./deletePostDialog";
 import moment from "moment";
 import ProfilePic from "./profilePic";
 
-const Posts = () => {
-  const { posts } = useFirebaseServices();
+const PublicPosts = () => {
+  const { pblcPosts } = useFirebaseServices();
   return (
     <>
       <div className="flex flex-col-reverse items-center gap-2">
-        {posts.length !== 0 ? (
-          posts.map(
+        {pblcPosts.length !== 0 ? (
+          pblcPosts.map(
             (
               {
                 content,
@@ -80,4 +80,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default PublicPosts;
