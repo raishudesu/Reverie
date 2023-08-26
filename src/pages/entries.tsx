@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Notebook from "../assets/notebook.svg";
 import PublicPosts from "@/components/publicPosts";
 
-const HomePosts = () => {
+const Entries = () => {
   const { getPublicPosts } = useFirebaseServices();
 
   const { isLoading, isSuccess } = useQuery({
@@ -44,4 +44,4 @@ const HomePosts = () => {
   );
 };
 
-export default HomePosts;
+export default Entries;

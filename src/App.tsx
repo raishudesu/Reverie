@@ -8,7 +8,7 @@ import Protected from "./components/protected";
 import Home from "./pages/home";
 import Header from "./components/header";
 import Profile from "./pages/profile";
-import HomePosts from "./pages/homePosts";
+import Entries from "./pages/entries";
 import Settings from "./pages/settings";
 import Notifications from "./pages/notifications";
 
@@ -29,8 +29,8 @@ function App() {
               </Protected>
             }
           >
-            <Route path="/home" element={<HomePosts />} />
-            <Route path="/home/profile" element={<Profile />} />
+            <Route path="/home" element={<Profile />} />
+            <Route path="/home/entries" element={<Entries />} />
             <Route path="/home/notifications" element={<Notifications />} />
             <Route path="/home/settings" element={<Settings />} />
           </Route>
