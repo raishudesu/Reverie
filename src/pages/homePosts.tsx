@@ -1,6 +1,5 @@
-import AddReverie from "@/components/addReverie";
 import SkeletonLoader from "@/components/skeleton";
-import { Card } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useQuery } from "@tanstack/react-query";
 import Notebook from "../assets/notebook.svg";
@@ -25,7 +24,7 @@ const HomePosts = () => {
         />
       </Card>
       <Card className="border-t-0 w-full p-4 rounded-t-none">
-        <AddReverie />
+        <CardTitle>Public entries</CardTitle>
       </Card>
       {isLoading && (
         <div className="flex flex-col gap-9 mt-6">

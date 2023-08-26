@@ -211,8 +211,11 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
     set({ posts });
   },
   deletePost: async (uid: string | undefined, postId: number) => {
+    const postRef = doc(db, `users/${uid}/posts/${postId}`);
+    const pblcPostRef = doc(db, `posts/${postId}`);
     try {
-      await deleteDoc(doc(db, `users/${uid}/posts/${postId}`));
+      await deleteDoc(postRef);
+      await deleteDoc(pblcPostRef);
       toast({
         title: `Deleted successfully`,
       });
@@ -230,8 +233,13 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   updatePost: async (postId: number, updatedPost: string) => {
     const uid = useFirebaseServices.getState().currentUser?.uid;
     const postRef = doc(db, `users/${uid}/posts/${postId}`);
+    const pblcPostRef = doc(db, `posts/${postId}`);
     try {
       await updateDoc(postRef, {
+        content: updatedPost,
+        editedAt: new Date(),
+      });
+      await updateDoc(pblcPostRef, {
         content: updatedPost,
         editedAt: new Date(),
       });
@@ -340,4 +348,4 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   },
 }));
 
-useFirebaseServices.getState().initializeAuthStateListener();
+// useFirebaseServices.getState().initializeAuthStateListener();

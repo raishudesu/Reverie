@@ -6,13 +6,14 @@ import Dreamer from "../assets/dreamer.svg";
 
 const SignIn = () => {
   const navigate = useNavigate();
-  const { currentUser } = useFirebaseServices();
+  const { currentUser, initializeAuthStateListener } = useFirebaseServices();
 
   const [isLoading, setIsLoading] = useState(true);
 
   // to refrain the sign in page on rendering if user exists
   useEffect(() => {
     const checkUser = () => {
+      initializeAuthStateListener();
       currentUser
         ? navigate("/home")
         : setTimeout(() => {
@@ -20,7 +21,7 @@ const SignIn = () => {
           }, 2000);
     };
     checkUser();
-  }, [currentUser, navigate]);
+  }, [currentUser, navigate, initializeAuthStateListener]);
 
   return (
     <div className="w-full h-screen max-h-fit flex justify-center items-center p-2">

@@ -57,9 +57,14 @@ export const SignUpSchema = z
 
 export const AddPostSchema = z.object({
   display: z.string(),
-  post: z.string().min(3, {
-    message: "A post must be at least 3 characters.",
-  }),
+  post: z
+    .string()
+    .min(3, {
+      message: "A post must be at least 3 characters.",
+    })
+    .max(1500, {
+      message: "A post must not exceed 1500 characters.",
+    }),
 });
 
 export const EditEmailSchema = z.object({

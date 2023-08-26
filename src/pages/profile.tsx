@@ -1,9 +1,10 @@
+import AddReverie from "@/components/addReverie";
 import EditProfilePicture from "@/components/editProfilePicture";
 import EditUsernameDialog from "@/components/editUsernameDialog";
 import Posts from "@/components/posts";
 import ProfilePic from "@/components/profilePic";
 import SkeletonLoader from "@/components/skeleton";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { useFirebaseServices } from "@/stores/useFirebase";
 import { useQuery } from "@tanstack/react-query";
 
@@ -38,10 +39,8 @@ const Profile = () => {
             </div>
           </CardHeader>
         </Card>
-        <Card className="border-none">
-          <CardHeader className="flex flex-col justify-center items-start ">
-            <CardTitle>Your posts</CardTitle>
-          </CardHeader>
+        <Card className="w-full p-4">
+          <AddReverie />
         </Card>
         {isLoading && (
           <div className="flex flex-col gap-9 mt-6">
