@@ -28,7 +28,7 @@ const PublicPosts = () => {
             postId: number;
             editedAt: Timestamp | undefined;
             authorUsername: string;
-            profPicUrl: string;
+            profPicUrl: string | undefined;
           }) => {
             // Convert Firebase Timestamp to string
             const createdAtString = moment.unix(created_at.seconds).fromNow();
