@@ -9,7 +9,8 @@ import { useFirebaseServices } from "@/stores/useFirebase";
 import { useQuery } from "@tanstack/react-query";
 
 const Profile = () => {
-  const { username, currentUser, fetchPosts } = useFirebaseServices();
+  const { username, currentUser, fetchPosts, profilePicUrl } =
+    useFirebaseServices();
 
   const { isLoading, isSuccess } = useQuery({
     queryKey: ["posts"],
@@ -24,7 +25,7 @@ const Profile = () => {
         <Card className="border-t-0 rounded-t-none">
           <CardHeader className="flex flex-col justify-center items-start ">
             <div className="w-[150px] h-[150px] ">
-              <ProfilePic />
+              <ProfilePic profPicUrl={profilePicUrl} />
             </div>
             <div className="w-full flex justify-between items-center flex-wrap gap-4">
               <div className="flex flex-col gap-1">

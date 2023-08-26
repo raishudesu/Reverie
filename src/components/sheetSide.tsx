@@ -27,7 +27,7 @@ type SheetSide = (typeof SHEET_SIDES)[number];
 const SheetSide = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const { currentUser, username } = useFirebaseServices();
+  const { currentUser, username, profilePicUrl } = useFirebaseServices();
 
   return (
     <div className="md:hidden ">
@@ -49,7 +49,7 @@ const SheetSide = () => {
                 <div className="flex flex-col justify-start items-start gap-6">
                   <div className="flex flex-col justify-center items-start gap-2">
                     <div className="rounded-full w-[50px] h-[50px] overflow-hidden">
-                      <ProfilePic />
+                      <ProfilePic profPicUrl={profilePicUrl} />
                     </div>
                     <h1 className="text-md font-bold">{username}</h1>
                   </div>

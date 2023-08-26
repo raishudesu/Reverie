@@ -13,7 +13,7 @@ import moment from "moment";
 import ProfilePic from "./profilePic";
 
 const Posts = () => {
-  const { posts } = useFirebaseServices();
+  const { posts, profilePicUrl } = useFirebaseServices();
   return (
     <>
       <div className="flex flex-col-reverse items-center gap-2">
@@ -41,7 +41,7 @@ const Posts = () => {
                 <Card key={postId} className="w-full flex">
                   <CardHeader className="px-0 pl-4">
                     <div className="rounded-full w-[50px] h-[50px] overflow-hidden">
-                      <ProfilePic />
+                      <ProfilePic profPicUrl={profilePicUrl} />
                     </div>
                   </CardHeader>
                   <Card className="w-full flex flex-col items-start border-none">

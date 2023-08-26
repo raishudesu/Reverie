@@ -21,12 +21,14 @@ const PublicPosts = () => {
             created_at,
             postId,
             authorUsername,
+            profPicUrl,
           }: {
             content: string;
             created_at: Timestamp;
             postId: number;
             editedAt: Timestamp | undefined;
             authorUsername: string;
+            profPicUrl: string;
           }) => {
             // Convert Firebase Timestamp to string
             const createdAtString = moment.unix(created_at.seconds).fromNow();
@@ -38,7 +40,7 @@ const PublicPosts = () => {
               <Card key={postId} className="w-full flex">
                 <CardHeader className="px-0 pl-4">
                   <div className="rounded-full w-[50px] h-[50px] overflow-hidden">
-                    <ProfilePic />
+                    <ProfilePic profPicUrl={profPicUrl} />
                   </div>
                 </CardHeader>
                 <Card className="w-full flex flex-col items-start border-none">

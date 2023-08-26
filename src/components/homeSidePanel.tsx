@@ -12,7 +12,7 @@ import ProfilePic from "./profilePic";
 
 const HomeSidePanel = () => {
   const navigate = useNavigate();
-  const { currentUser, setUsername, username, getProfilePic } =
+  const { currentUser, setUsername, username, getProfilePic, profilePicUrl } =
     useFirebaseServices();
   const uid = currentUser?.uid;
   const usernameRef = doc(db, `users/${uid}`);
@@ -52,7 +52,7 @@ const HomeSidePanel = () => {
           <div className="flex flex-col justify-start items-start gap-6">
             <div className="flex flex-col justify-center items-start gap-2">
               <div className="rounded-full w-[50px] h-[50px] overflow-hidden">
-                <ProfilePic />
+                <ProfilePic profPicUrl={profilePicUrl} />
               </div>
 
               {isLoading ? (

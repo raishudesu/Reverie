@@ -1,14 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useFirebaseServices } from "@/stores/useFirebase";
 
-const ProfilePic = () => {
-  const { profilePicUrl } = useFirebaseServices();
+const ProfilePic = ({ profPicUrl }: { profPicUrl: string | undefined }) => {
   return (
     <Avatar className="w-full h-full">
-      <AvatarImage
-        src={profilePicUrl as string | undefined}
-        alt="profile pic"
-      />
+      <AvatarImage src={profPicUrl} alt="profile pic" />
       <AvatarFallback>R</AvatarFallback>
     </Avatar>
   );
