@@ -5,9 +5,10 @@ import EditEmailDialog from "@/components/editEmailDialog";
 import UpdatePwdDialog from "@/components/updatePwdDialog";
 import DeleteAccDialog from "@/components/deleteAccDialog";
 import ProfilePic from "@/components/profilePic";
+import EasterEgg from "@/components/easterEgg";
 
 const Settings = () => {
-  const { currentUser, username } = useFirebaseServices();
+  const { currentUser, username, profilePicUrl } = useFirebaseServices();
   const provider = currentUser?.providerData[0].providerId;
   return (
     <div className="w-full h-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
@@ -16,9 +17,9 @@ const Settings = () => {
         <Card className="border-t-0 rounded-t-none h-full">
           <CardHeader className="flex flex-row justify-start items-center gap-2 ">
             <div className="rounded-full w-[50px] h-[50px] overflow-hidden">
-              <ProfilePic />
+              <ProfilePic profPicUrl={profilePicUrl} />
             </div>
-            <CardTitle>Account settings</CardTitle>
+            <CardTitle className="font-bold">Account settings</CardTitle>
           </CardHeader>
           <CardContent className="text-muted-foreground flex flex-col justify-start items-start gap-6">
             <div className="text-sm flex flex-col gap-2">
@@ -42,7 +43,7 @@ const Settings = () => {
         </Card>
         <div className="w-full flex flex-col items-center gap-2 text-muted-foreground text-sm p-4">
           <div className="flex gap-1 items-center font-bold">
-            <LiaCopyright /> Reverie 2023
+            <LiaCopyright /> <EasterEgg />
           </div>
           <p>All rights reserved.</p>
         </div>

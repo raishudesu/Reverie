@@ -1,4 +1,4 @@
-import AddReverie from "@/components/addReverie";
+import AddPost from "@/components/addPost";
 import EditProfilePicture from "@/components/editProfilePicture";
 import EditUsernameDialog from "@/components/editUsernameDialog";
 import Posts from "@/components/posts";
@@ -41,7 +41,7 @@ const Profile = () => {
           </CardHeader>
         </Card>
         <Card className="w-full p-4">
-          <AddReverie />
+          <AddPost />
         </Card>
         {isLoading && (
           <div className="flex flex-col gap-9 mt-6">

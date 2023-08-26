@@ -11,6 +11,7 @@ import UpdatePostDialog from "./updatePostDialog";
 import DeletePostDialog from "./deletePostDialog";
 import moment from "moment";
 import ProfilePic from "./profilePic";
+import PostDateTooltip from "./postDateTooltip";
 
 const Posts = () => {
   const { posts, profilePicUrl } = useFirebaseServices();
@@ -24,12 +25,14 @@ const Posts = () => {
               created_at,
               postId,
               authorUsername,
+              display,
             }: {
               content: string;
               created_at: Timestamp;
               postId: number;
               editedAt: Timestamp | undefined;
               authorUsername: string;
+              display: string;
             }) => {
               // Convert Firebase Timestamp to string
               const createdAtString = moment.unix(created_at.seconds).fromNow();
@@ -45,8 +48,11 @@ const Posts = () => {
                     </div>
                   </CardHeader>
                   <Card className="w-full flex flex-col items-start border-none">
-                    <CardHeader className="w-full pb-2 font-bold">
+                    <CardHeader className="w-full flex flex-row justify-between pb-2 font-bold">
                       {authorUsername}
+                      <span className="font-normal text-xs text-muted-foreground capitalize">
+                        {display}
+                      </span>
                     </CardHeader>
                     <CardContent>
                       <CardDescription className="text-md break-all">
@@ -55,7 +61,10 @@ const Posts = () => {
                     </CardContent>
                     <CardFooter className="text-xs text-muted-foreground flex justify-between w-full flex-wrap">
                       <div className="flex gap-1 ">
-                        <div>Posted {createdAtString}</div>
+                        <PostDateTooltip
+                          memoStr={createdAtString}
+                          date={created_at}
+                        />
                       </div>
                       <div className="flex items-center gap-3">
                         <UpdatePostDialog

@@ -24,7 +24,7 @@ const Entries = () => {
         />
       </Card>
       <Card className="border-t-0 w-full p-4 rounded-t-none">
-        <CardTitle>Public entries</CardTitle>
+        <CardTitle className="font-bold">Public entries</CardTitle>
       </Card>
       {isLoading && (
         <div className="flex flex-col gap-9 mt-6">

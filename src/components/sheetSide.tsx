@@ -53,6 +53,7 @@ const SheetSide = () => {
                     </div>
                     <h1 className="text-md font-bold">{username}</h1>
                   </div>
+
                   <button
                     className="flex gap-2 font-semibold items-center text-xl"
                     onClick={() => {
@@ -60,18 +61,18 @@ const SheetSide = () => {
                       setOpen(false);
                     }}
                   >
-                    <CgNotes size={20} />
-                    Entries
+                    <AiOutlineUser size={20} />
+                    Profile
                   </button>
                   <button
                     className="flex gap-2 font-semibold items-center text-xl"
                     onClick={() => {
-                      navigate("/home/profile");
+                      navigate("/home/entries");
                       setOpen(false);
                     }}
                   >
-                    <AiOutlineUser size={20} />
-                    Profile
+                    <CgNotes size={20} />
+                    Entries
                   </button>
                   <button
                     className="flex gap-2 font-semibold items-center text-xl"

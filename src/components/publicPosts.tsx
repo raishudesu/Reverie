@@ -9,6 +9,7 @@ import {
 import { Timestamp } from "firebase/firestore";
 import moment from "moment";
 import ProfilePic from "./profilePic";
+import PostDateTooltip from "./postDateTooltip";
 
 const PublicPosts = () => {
   const { pblcPosts } = useFirebaseServices();
@@ -54,7 +55,10 @@ const PublicPosts = () => {
                   </CardContent>
                   <CardFooter className="text-xs text-gray-500 flex justify-between w-full flex-wrap">
                     <div className="flex flex-col gap-1 ">
-                      <div>Posted {createdAtString}</div>
+                      <PostDateTooltip
+                        memoStr={createdAtString}
+                        date={created_at}
+                      />
                     </div>
                   </CardFooter>
                 </Card>

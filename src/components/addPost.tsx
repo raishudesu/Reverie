@@ -19,7 +19,7 @@ import { AddPostSchema } from "@/lib/types";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/select";
 import { AiOutlineGlobal } from "react-icons/ai";
 
-const AddReverie = () => {
+const AddPost = () => {
   const { addPost } = useFirebaseServices();
 
   const form = useForm<z.infer<typeof AddPostSchema>>({
@@ -44,7 +44,7 @@ const AddReverie = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full flex flex-col gap-4"
       >
-        <FormLabel className="text-2xl flex justify-start items-center gap-2">
+        <FormLabel className="text-2xl font-bold flex justify-start items-center gap-2">
           Post
         </FormLabel>
         <FormField
@@ -91,4 +91,4 @@ const AddReverie = () => {
   );
 };
 
-export default AddReverie;
+export default AddPost;
