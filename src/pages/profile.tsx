@@ -17,7 +17,6 @@ const Profile = () => {
     queryFn: fetchUserPosts,
     refetchOnWindowFocus: false,
   });
-
   return (
     <div className="w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400">
       <Card className="border-b-0 h-32 bg-gradient-to-r rounded-b-none from-[#DEE4EA] to-[#F9FCFF] dark:from-[#28313B] dark:to-[#485461]"></Card>

@@ -36,8 +36,9 @@ const SignUpForm = () => {
 
   const onSubmit = async (data: z.infer<typeof SignUpSchema>) => {
     try {
-      await signUp(data.email, data.password, data.username);
       setIsLoading(true);
+
+      await signUp(data.email, data.password, data.username);
 
       setTimeout(() => {
         setIsLoading(false);

@@ -42,10 +42,11 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   userPosts: [],
   pblcPosts: [],
   username: undefined,
-  profilePicUrl: undefined,
+  profilePicUrl: "",
   signIn: async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      set({ profilePicUrl: undefined });
       toast({
         title: `Signed in successfully`,
       });
@@ -69,6 +70,7 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
             email: email,
             createdAt: serverTimestamp(),
             providerId: user.providerData[0].providerId,
+            profPicUrl: null,
           })
             .then(() => {
               toast({
@@ -122,6 +124,7 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
           email: user.email,
           createdAt: serverTimestamp(),
           providerId: user.providerData[0].providerId,
+          profPicUrl: null,
         });
 
         toast({
