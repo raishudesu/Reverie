@@ -9,12 +9,12 @@ import { useFirebaseServices } from "@/stores/useFirebase";
 import { useQuery } from "@tanstack/react-query";
 
 const Profile = () => {
-  const { username, currentUser, fetchPosts, profilePicUrl } =
+  const { username, currentUser, fetchUserPosts, profilePicUrl } =
     useFirebaseServices();
 
   const { isLoading, isSuccess } = useQuery({
-    queryKey: ["posts"],
-    queryFn: fetchPosts,
+    queryKey: ["userPosts"],
+    queryFn: fetchUserPosts,
     refetchOnWindowFocus: false,
   });
 

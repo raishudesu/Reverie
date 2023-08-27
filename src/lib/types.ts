@@ -4,7 +4,7 @@ import { DocumentData } from "firebase/firestore";
 
 export interface IFirebase {
   currentUser: User | null;
-  posts: DocumentData;
+  userPosts: DocumentData;
   pblcPosts: DocumentData;
   username: string | undefined;
   signIn: (email: string, password: string) => Promise<void>;
@@ -12,10 +12,10 @@ export interface IFirebase {
   signOut: () => void;
   signInWithGoogle: () => void;
   initializeAuthStateListener: () => void;
-  fetchPosts: () => void;
+  fetchUserPosts: () => void;
   addPost: (display: string, content: string) => void;
   getPublicPosts: () => void;
-  setPosts: ({ posts }: { posts: object }) => void;
+  setPosts: ({ userPosts }: { userPosts: object }) => void;
   deletePost: (uid: string | undefined, postId: number) => void;
   setUsername: (username: string) => void;
   updatePost: (postId: number, updatedPost: string) => void;

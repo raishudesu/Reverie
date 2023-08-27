@@ -9,7 +9,7 @@ const Entries = () => {
   const { getPublicPosts } = useFirebaseServices();
 
   const { isLoading, isSuccess } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ["publicPosts"],
     queryFn: getPublicPosts,
     refetchOnWindowFocus: false,
   });

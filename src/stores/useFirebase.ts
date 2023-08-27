@@ -25,6 +25,7 @@ import {
   getDoc,
   query,
   where,
+  getDocs,
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { toast } from "@/components/ui/use-toast";
@@ -38,7 +39,7 @@ export const db = getFirestore(app);
 
 export const useFirebaseServices = create<IFirebase>((set) => ({
   currentUser: null,
-  posts: [],
+  userPosts: [],
   pblcPosts: [],
   username: undefined,
   profilePicUrl: undefined,
@@ -138,15 +139,17 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
     }
   },
 
-  fetchPosts: () => {
+  fetchUserPosts: () => {
     const { currentUser } = useFirebaseServices.getState();
     const uid = currentUser?.uid;
-    const postsRef = collection(db, `users/${uid}/posts`);
+    const postsRef = collection(db, "posts");
 
-    const unsubscribe = onSnapshot(postsRef, (snapshot) => {
+    const q = query(postsRef, where("authorId", "==", uid));
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       const fetchedPosts = snapshot.docs.map((doc) => doc.data());
 
-      set({ posts: fetchedPosts }); // Update the posts in the state
+      set({ userPosts: fetchedPosts }); // Update the posts in the state
     });
 
     // Unsubscribe from the listener when component unmounts
@@ -158,25 +161,26 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
   },
   addPost: async (display: string, content: string) => {
     const user = useFirebaseServices.getState().currentUser;
-    const username = useFirebaseServices.getState().username;
+    const { username } = useFirebaseServices.getState();
+    // const username = useFirebaseServices.getState().username;
     const profPicUrl = useFirebaseServices.getState().profilePicUrl;
 
     try {
       const uid = user?.uid;
       const postId = Date.now().toString();
 
-      const userPostsRef = collection(db, "users");
+      const userRef = collection(db, "users");
       const postsRef = collection(db, "posts");
 
       const postsDocRef = doc(postsRef, postId);
-      const docRef = doc(userPostsRef, uid, "posts", postId);
+      const docRef = doc(userRef, uid, "posts", postId);
 
       const postData = {
         created_at: new Date(),
         content: content,
         postId: postId,
-        authorUsername: username,
         authorId: uid,
+        authorUsername: username,
         authorEmail: user?.email,
         profPicUrl: profPicUrl,
         display: display,
@@ -207,8 +211,8 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
       }
     };
   },
-  setPosts: ({ posts }: { posts: object }) => {
-    set({ posts });
+  setPosts: ({ userPosts }: { userPosts: object }) => {
+    set({ userPosts });
   },
   deletePost: async (uid: string | undefined, postId: number) => {
     const postRef = doc(db, `users/${uid}/posts/${postId}`);
@@ -259,6 +263,21 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
       await updateDoc(userRef, {
         username: newUsername,
       });
+
+      const postsRef = collection(db, "posts");
+
+      const q = query(postsRef, where("authorId", "==", uid));
+
+      const snapshot = await getDocs(q);
+
+      snapshot.forEach((document) => {
+        const postRef = document.ref;
+        const path = doc(db, postRef.path);
+        updateDoc(path, {
+          authorUsername: newUsername,
+        });
+      });
+
       toast({
         title: `Username updated`,
       });
@@ -318,11 +337,25 @@ export const useFirebaseServices = create<IFirebase>((set) => ({
 
     const imageRefUrl = `userProfPics/${imageUpload.name + v4()}`;
     const imageRef = ref(storage, imageRefUrl);
+    const postsRef = collection(db, "posts");
+    const q = query(postsRef, where("authorId", "==", uid));
 
     try {
       await uploadBytes(imageRef, imageUpload);
+
+      const url = await getDownloadURL(imageRef);
+      const snapshot = await getDocs(q);
+
       await updateDoc(userRef, {
-        profPicUrl: imageRefUrl,
+        profPicUrl: url,
+      });
+
+      snapshot.forEach((document) => {
+        const postRef = document.ref;
+        const path = doc(db, postRef.path);
+        updateDoc(path, {
+          profPicUrl: url,
+        });
       });
       toast({
         title: `Profile picture updated`,
